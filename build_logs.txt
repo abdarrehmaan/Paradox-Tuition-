@@ -1,0 +1,7 @@
+src/App.tsx(1,1): error TS6133: 'React' is declared but its value is never read.
+src/components/layout/Footer.tsx(3,41): error TS2305: Module '"lucide-react"' has no exported member 'Facebook'.
+src/components/layout/Footer.tsx(3,51): error TS2305: Module '"lucide-react"' has no exported member 'Twitter'.
+src/components/layout/Footer.tsx(3,60): error TS2305: Module '"lucide-react"' has no exported member 'Instagram'.
+src/components/layout/Footer.tsx(3,71): error TS2305: Module '"lucide-react"' has no exported member 'Linkedin'.
+src/pages/FindTutors.tsx(3,21): error TS1484: 'Tutor' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled.
+src/pages/Home.tsx(3,88): error TS6133: 'Users' is declared but its value is never read.
