@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Modal from '../common/Modal';
-import { supabase } from '../../lib/supabase';
 
 interface DemoRequestModalProps {
   isOpen: boolean;

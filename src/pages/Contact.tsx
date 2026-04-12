@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Send, MessageCircle, CheckCircle } from 'lucide-react';
+import { Mail, Phone, Send, MessageCircle, CheckCircle } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
 const Contact: React.FC = () => {
