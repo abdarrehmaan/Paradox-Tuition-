@@ -7,6 +7,7 @@ const BecomeTutor: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [resumeFile, setResumeFile] = useState<File | null>(null);
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
 
   const [formData, setFormData] = useState({
     full_name: '',
@@ -97,11 +98,11 @@ const BecomeTutor: React.FC = () => {
               Join WhatsApp Channel
             </a>
           </div>
-          <button 
             onClick={() => {
               setIsSubmitted(false);
               setFormData({ full_name: '', phone: '', email: '', city: '', subjects: '', classes: '', experience: '', qualification: '', mode: '' });
               setResumeFile(null);
+              setAgreedToTerms(false);
             }}
             className="btn-primary w-full"
           >
@@ -226,6 +227,85 @@ const BecomeTutor: React.FC = () => {
                   </button>
                 </div>
               )}
+            </div>
+
+            {/* Terms and Conditions */}
+            <div>
+              <h3 className="text-xl font-bold text-brand-dark mb-6 border-b border-gray-100 pb-2">Terms & Conditions</h3>
+              <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 h-64 overflow-y-auto mb-4 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed shadow-inner">
+                <h4 className="font-bold text-lg mb-4 text-brand-dark">📜 Tuition Collaboration Terms & Conditions</h4>
+                {`1. Definitions
+“Platform / We / Us” refers to the tuition service provider facilitating connections between tutors and parents/students.
+“Tutor” refers to the individual providing teaching services.
+“Parent/Student/Client” refers to the individual availing tuition services.
+
+2. First Month Payment
+• The Platform will collect the first month’s tuition fee from the parent/student.
+• 50% of the total fee will be retained by the Platform as a service charge.
+• The remaining 50% will be transferred to the Tutor within 7 days after completion of the first month.
+• In case the student discontinues within the first month, the Tutor’s payment will be calculated proportionally based on the number of classes conducted.
+
+3. Payments from Second Month Onwards
+• From the second month onward, the Parent/Student will pay the Tutor directly.
+• The Platform will not be responsible for any payment delays or disputes beyond the first month.
+
+4. Fee Structure
+• The agreed tuition fee is final and non-negotiable once confirmed.
+• Any changes must be mutually agreed upon by all parties with prior notice.
+
+5. Trial Classes
+• A maximum of 2 trial classes will be conducted.
+• Each trial class will be of standard duration.
+• Trial classes will be unpaid unless otherwise agreed.
+• No extension beyond 2 trial classes will be permitted.
+
+6. Tutor Commitment
+• Once a Tutor accepts a tuition assignment, they are expected to fulfill their commitment professionally.
+• Backing out without a valid reason (such as medical emergency or unavoidable circumstances) may result in removal from future opportunities on the Platform.
+
+7. Failure in Demo/Trial
+• If a Tutor fails to meet expectations in two consecutive demo/trial opportunities, the Platform reserves the right to discontinue offering further tuition assignments.
+
+8. Code of Conduct
+Tutors are expected to:
+• Maintain punctuality and professionalism
+• Deliver quality teaching
+• Communicate respectfully with students and parents
+• Avoid any misconduct or inappropriate behavior
+Failure to adhere may result in termination from the Platform.
+
+9. Non-Circumvention
+• Tutors and Parents/Students agree not to bypass the Platform to establish direct arrangements during the first month of engagement.
+• Any violation may lead to termination of services and restriction from future opportunities.
+
+10. Confidentiality
+• All discussions, agreements, and revenue-sharing terms between the Tutor and the Platform must remain strictly confidential and must not be disclosed to any third party.
+
+11. Cancellation & Termination
+• Either party may discontinue tuition after the first month with prior notice.
+• The Platform reserves the right to terminate services in case of misconduct, breach of terms, or non-compliance.
+
+12. Dispute Resolution
+• In case of any disputes, the Platform will act as a mediator, and its decision shall be final and binding.
+
+13. Governing Law
+• These Terms & Conditions shall be governed by and interpreted in accordance with the laws of India.
+
+14. Acceptance
+By proceeding, the Tutor confirms:`}
+              </div>
+              <label className="flex items-start gap-3 cursor-pointer p-2 hover:bg-gray-50 rounded-lg transition-colors">
+                <input 
+                  type="checkbox" 
+                  checked={agreedToTerms} 
+                  onChange={(e) => setAgreedToTerms(e.target.checked)} 
+                  className="w-5 h-5 mt-0.5 text-brand-blue border-gray-300 rounded focus:ring-brand-blue" 
+                  required 
+                />
+                <span className="text-gray-700 font-medium select-none">
+                  “I have read, understood, and agree to abide by the Terms & Conditions stated above.”
+                </span>
+              </label>
             </div>
 
             {/* Submit */}
