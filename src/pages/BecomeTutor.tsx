@@ -98,6 +98,7 @@ const BecomeTutor: React.FC = () => {
               Join WhatsApp Channel
             </a>
           </div>
+          <button
             onClick={() => {
               setIsSubmitted(false);
               setFormData({ full_name: '', phone: '', email: '', city: '', subjects: '', classes: '', experience: '', qualification: '', mode: '' });
@@ -291,7 +292,35 @@ Failure to adhere may result in termination from the Platform.
 13. Governing Law
 • These Terms & Conditions shall be governed by and interpreted in accordance with the laws of India.
 
-14. Acceptance
+14. Additional Legal Terms
+a) Limitation of Liability
+The Platform shall not be liable for any indirect, incidental, or consequential damages, including academic performance, disputes, or financial losses between Tutor and Parent/Student.
+
+b) Indemnity
+Users agree to indemnify and hold harmless the Platform from any claims, damages, or liabilities arising due to misuse of services, breach of terms, or misconduct.
+
+c) No Guarantee of Results
+The Platform does not guarantee any specific academic outcomes or results from tuition services.
+
+d) Background Verification Disclaimer
+The Platform does not guarantee or verify the credentials, qualifications, or background of Tutors. Users are advised to conduct their own due diligence.
+
+e) Digital Communication Consent
+Users consent to receive communication via calls, messages, and digital platforms (including WhatsApp).
+
+f) Service Availability
+The Platform does not guarantee uninterrupted or error-free services and may modify or discontinue services at any time.
+
+g) Data Usage
+The Platform may use anonymized user data for analytics, service improvement, and operational purposes.
+
+h) Eligibility
+Users must be at least 18 years old or have parental/guardian consent to use the Platform.
+
+i) Force Majeure
+The Platform shall not be held responsible for delays or failures caused by events beyond its control, including natural disasters, internet issues, or government restrictions.
+
+15. Acceptance
 By proceeding, the Tutor confirms:`}
               </div>
               <label className="flex items-start gap-3 cursor-pointer p-2 hover:bg-gray-50 rounded-lg transition-colors">
