@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import WhatsAppButton from './components/common/WhatsAppButton';
+import ScrollToTop from './components/common/ScrollToTop';
 
 // Placeholder Pages
 import Home from './pages/Home';
@@ -19,6 +20,7 @@ import DonateBook from './pages/DonateBook';
 function App() {
   return (
     <div className="min-h-screen flex flex-col font-sans">
+      <ScrollToTop />
       <Navbar />
       <main className="flex-grow pt-[72px]"> {/* pt-[72px] to account for fixed navbar */}
         <Routes>

@@ -4,6 +4,53 @@ import TutorCard from '../components/tutors/TutorCard';
 import type { Tutor } from '../components/tutors/TutorCard';
 import { supabase } from '../lib/supabase';
 
+const mockTutors: Tutor[] = [
+  {
+    id: 'mock-1',
+    name: 'Rahul Sharma',
+    photoUrl: '', // Explicitly blank so pictures aren't used
+    experience: 5,
+    subjects: ['Mathematics', 'Physics'],
+    location: 'Prayagraj',
+    fees: '₹500',
+    mode: 'Online/Offline',
+    rating: 4.8
+  },
+  {
+    id: 'mock-2',
+    name: 'Priya Patel',
+    photoUrl: '',
+    experience: 8,
+    subjects: ['English', 'History'],
+    location: 'Prayagraj',
+    fees: '₹600',
+    mode: 'Online',
+    rating: 4.9
+  },
+  {
+    id: 'mock-3',
+    name: 'Amit Kumar',
+    photoUrl: '',
+    experience: 3,
+    subjects: ['Science', 'Chemistry'],
+    location: 'Prayagraj',
+    fees: '₹400',
+    mode: 'Offline',
+    rating: 4.6
+  },
+  {
+    id: 'mock-4',
+    name: 'Sneha Gupta',
+    photoUrl: '',
+    experience: 10,
+    subjects: ['Accounts', 'Economics'],
+    location: 'Prayagraj',
+    fees: '₹800',
+    mode: 'Online/Offline',
+    rating: 5.0
+  }
+];
+
 const FindTutors: React.FC = () => {
   const [tutors, setTutors] = useState<Tutor[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -16,11 +63,18 @@ const FindTutors: React.FC = () => {
         setLoading(true);
         // Supabase returns an array of objects that happen to match our Tutor interface
         const { data, error: dbError } = await supabase.from('tutors').select('*');
-        if (dbError) throw dbError;
-        if (data) setTutors(data as Tutor[]);
+        
+        let fetchedData: Tutor[] = [];
+        if (!dbError && data) {
+          fetchedData = data as Tutor[];
+        }
+        
+        // Combine fetched data with mock data
+        setTutors([...fetchedData, ...mockTutors]);
       } catch (err: any) {
         console.error("Error fetching tutors:", err);
-        setError(err.message);
+        setError("Could not connect to database, showing sample profiles.");
+        setTutors(mockTutors);
       } finally {
         setLoading(false);
       }

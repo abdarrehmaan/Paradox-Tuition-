@@ -25,11 +25,17 @@ const TutorCard: React.FC<TutorCardProps> = ({ tutor }) => {
     <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-300 flex flex-col md:flex-row gap-6 p-6">
       {/* Photo */}
       <div className="flex-shrink-0 relative w-24 h-24 md:w-32 md:h-32 mx-auto md:mx-0">
-        <img 
-          src={tutor.photoUrl} 
-          alt={tutor.name} 
-          className="w-full h-full object-cover rounded-full border-4 border-blue-50 shadow-sm"
-        />
+        {tutor.photoUrl ? (
+          <img 
+            src={tutor.photoUrl} 
+            alt={tutor.name} 
+            className="w-full h-full object-cover rounded-full border-4 border-blue-50 shadow-sm"
+          />
+        ) : (
+          <div className="w-full h-full bg-brand-blue/10 text-brand-blue flex items-center justify-center rounded-full border-4 border-blue-50 shadow-sm text-3xl md:text-4xl font-bold uppercase">
+            {tutor.name.charAt(0)}
+          </div>
+        )}
         <div className="absolute -bottom-2 -right-2 bg-green-500 text-white p-1.5 rounded-full border-2 border-white" title="Verified Tutor">
           <ShieldCheck className="w-4 h-4" />
         </div>
