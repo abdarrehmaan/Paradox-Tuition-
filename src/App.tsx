@@ -16,6 +16,8 @@ import AddStudent from './pages/AddStudent';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import DonateBook from './pages/DonateBook';
+import Terms from './pages/Terms';
+import Privacy from './pages/Privacy';
 
 function App() {
   return (
@@ -36,6 +38,8 @@ function App() {
           <Route path="/add-student" element={<AddStudent />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/privacy" element={<Privacy />} />
         </Routes>
       </main>
       <Footer />

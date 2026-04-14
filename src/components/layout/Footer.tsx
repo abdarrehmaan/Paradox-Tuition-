@@ -90,8 +90,8 @@ const Footer: React.FC = () => {
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-6 text-sm">
           <p className="text-slate-500">&copy; {new Date().getFullYear()} Paradox Tuition Services. All rights reserved.</p>
           <div className="flex space-x-8 font-medium">
-            <a href="#" className="hover:text-slate-200 transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-slate-200 transition-colors">Terms of Service</a>
+            <Link to="/privacy" className="hover:text-slate-200 transition-colors">Privacy Policy</Link>
+            <Link to="/terms" className="hover:text-slate-200 transition-colors">Terms and Conditions</Link>
           </div>
         </div>
       </div>

@@ -8,6 +8,7 @@ const BecomeTutor: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [resumeFile, setResumeFile] = useState<File | null>(null);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [showTerms, setShowTerms] = useState(false);
 
   const [formData, setFormData] = useState({
     full_name: '',
@@ -104,6 +105,7 @@ const BecomeTutor: React.FC = () => {
               setFormData({ full_name: '', phone: '', email: '', city: '', subjects: '', classes: '', experience: '', qualification: '', mode: '' });
               setResumeFile(null);
               setAgreedToTerms(false);
+              setShowTerms(false);
             }}
             className="btn-primary w-full"
           >
@@ -231,98 +233,7 @@ const BecomeTutor: React.FC = () => {
             </div>
 
             {/* Terms and Conditions */}
-            <div>
-              <h3 className="text-xl font-bold text-brand-dark mb-6 border-b border-gray-100 pb-2">Terms & Conditions</h3>
-              <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 h-64 overflow-y-auto mb-4 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed shadow-inner">
-                <h4 className="font-bold text-lg mb-4 text-brand-dark">📜 Tuition Collaboration Terms & Conditions</h4>
-                {`1. Definitions
-“Platform / We / Us” refers to the tuition service provider facilitating connections between tutors and parents/students.
-“Tutor” refers to the individual providing teaching services.
-“Parent/Student/Client” refers to the individual availing tuition services.
-
-2. First Month Payment
-• The Platform will collect the first month’s tuition fee from the parent/student.
-• 50% of the total fee will be retained by the Platform as a service charge.
-• The remaining 50% will be transferred to the Tutor within 7 days after completion of the first month.
-• In case the student discontinues within the first month, the Tutor’s payment will be calculated proportionally based on the number of classes conducted.
-
-3. Payments from Second Month Onwards
-• From the second month onward, the Parent/Student will pay the Tutor directly.
-• The Platform will not be responsible for any payment delays or disputes beyond the first month.
-
-4. Fee Structure
-• The agreed tuition fee is final and non-negotiable once confirmed.
-• Any changes must be mutually agreed upon by all parties with prior notice.
-
-5. Trial Classes
-• A maximum of 2 trial classes will be conducted.
-• Each trial class will be of standard duration.
-• Trial classes will be unpaid unless otherwise agreed.
-• No extension beyond 2 trial classes will be permitted.
-
-6. Tutor Commitment
-• Once a Tutor accepts a tuition assignment, they are expected to fulfill their commitment professionally.
-• Backing out without a valid reason (such as medical emergency or unavoidable circumstances) may result in removal from future opportunities on the Platform.
-
-7. Failure in Demo/Trial
-• If a Tutor fails to meet expectations in two consecutive demo/trial opportunities, the Platform reserves the right to discontinue offering further tuition assignments.
-
-8. Code of Conduct
-Tutors are expected to:
-• Maintain punctuality and professionalism
-• Deliver quality teaching
-• Communicate respectfully with students and parents
-• Avoid any misconduct or inappropriate behavior
-Failure to adhere may result in termination from the Platform.
-
-9. Non-Circumvention
-• Tutors and Parents/Students agree not to bypass the Platform to establish direct arrangements during the first month of engagement.
-• Any violation may lead to termination of services and restriction from future opportunities.
-
-10. Confidentiality
-• All discussions, agreements, and revenue-sharing terms between the Tutor and the Platform must remain strictly confidential and must not be disclosed to any third party.
-
-11. Cancellation & Termination
-• Either party may discontinue tuition after the first month with prior notice.
-• The Platform reserves the right to terminate services in case of misconduct, breach of terms, or non-compliance.
-
-12. Dispute Resolution
-• In case of any disputes, the Platform will act as a mediator, and its decision shall be final and binding.
-
-13. Governing Law
-• These Terms & Conditions shall be governed by and interpreted in accordance with the laws of India.
-
-14. Additional Legal Terms
-a) Limitation of Liability
-The Platform shall not be liable for any indirect, incidental, or consequential damages, including academic performance, disputes, or financial losses between Tutor and Parent/Student.
-
-b) Indemnity
-Users agree to indemnify and hold harmless the Platform from any claims, damages, or liabilities arising due to misuse of services, breach of terms, or misconduct.
-
-c) No Guarantee of Results
-The Platform does not guarantee any specific academic outcomes or results from tuition services.
-
-d) Background Verification Disclaimer
-The Platform does not guarantee or verify the credentials, qualifications, or background of Tutors. Users are advised to conduct their own due diligence.
-
-e) Digital Communication Consent
-Users consent to receive communication via calls, messages, and digital platforms (including WhatsApp).
-
-f) Service Availability
-The Platform does not guarantee uninterrupted or error-free services and may modify or discontinue services at any time.
-
-g) Data Usage
-The Platform may use anonymized user data for analytics, service improvement, and operational purposes.
-
-h) Eligibility
-Users must be at least 18 years old or have parental/guardian consent to use the Platform.
-
-i) Force Majeure
-The Platform shall not be held responsible for delays or failures caused by events beyond its control, including natural disasters, internet issues, or government restrictions.
-
-15. Acceptance
-By proceeding, the Tutor confirms:`}
-              </div>
+            <div className="pt-2">
               <label className="flex items-start gap-3 cursor-pointer p-2 hover:bg-gray-50 rounded-lg transition-colors">
                 <input 
                   type="checkbox" 
@@ -331,10 +242,184 @@ By proceeding, the Tutor confirms:`}
                   className="w-5 h-5 mt-0.5 text-brand-blue border-gray-300 rounded focus:ring-brand-blue" 
                   required 
                 />
-                <span className="text-gray-700 font-medium select-none">
-                  “I have read, understood, and agree to abide by the Terms & Conditions stated above.”
+                <span className="text-gray-600 font-medium select-none">
+                  I agree to{' '}
+                  <span 
+                    className="text-[#38bdf8] hover:underline cursor-pointer" 
+                    onClick={(e) => { 
+                      e.preventDefault(); 
+                      setShowTerms(!showTerms); 
+                    }}
+                  >
+                    terms & conditions
+                  </span>
+                  . <span className="text-red-500">*</span>
                 </span>
               </label>
+
+              {showTerms && (
+                <div className="mt-4 bg-gray-50 border border-gray-200 rounded-lg p-6 h-64 overflow-y-auto text-sm text-gray-700 whitespace-pre-wrap leading-relaxed shadow-inner">
+                  {`⚖ 1. PLATFORM RIGHTS, CONTENT USE & GENERAL DISCLAIMER
+1.1 Right to Modify Terms
+The Platform reserves the absolute, irrevocable, perpetual, and unilateral right to amend, revise, update, modify, supplement, or replace any provision of these Terms & Conditions at its sole discretion, at any time, without prior notice or obligation of individual communication. Such modifications shall take effect immediately upon publication. Continued access or use of the Platform shall constitute a legally binding acknowledgment and acceptance of the updated Terms. Users are solely responsible for periodically reviewing the latest version.
+
+1.2 Content Usage Restriction
+All content available on the Platform, including but not limited to text, structure, design, branding elements, formats, and materials, constitutes the exclusive intellectual property of the Platform and is protected under applicable laws. Any unauthorized reproduction, duplication, distribution, public display, or commercial exploitation of such content is strictly prohibited and may result in legal proceedings.
+
+1.3 User-Generated Content
+By submitting reviews, feedback, comments, or any form of content, users grant the Platform a perpetual, irrevocable, worldwide, royalty-free license to use, reproduce, modify, publish, and display such content. Users represent that such content is original and does not violate third-party rights. The Platform reserves the right to remove or modify content at its sole discretion.
+
+1.4 Accuracy of Information
+While reasonable efforts are made to ensure accuracy, the Platform makes no warranties regarding completeness, reliability, or timeliness of information. The Platform shall not be liable for any loss arising from reliance on such information and reserves the right to correct inaccuracies within a reasonable timeframe (up to 7 working days).
+
+1.5 Reviews & Opinions Disclaimer
+All user opinions and reviews reflect individual perspectives and do not represent the Platform. The Platform disclaims all liability arising from such content.
+
+1.6 Platform Role
+The Platform functions strictly as an independent intermediary connecting Tutors and Parents/Students. It does not provide teaching services, supervise sessions, or guarantee outcomes. All engagements occur independently between users.
+
+👤 2. USER ELIGIBILITY & REGISTRATION
+Users must be legally competent to enter into binding agreements (18+ or under guardian supervision). All information provided must be accurate, complete, and current. Submission of false or misleading information may result in immediate suspension or termination without notice.
+
+💰 3. PAYMENT TERMS
+3.1 First Month Engagement Fee
+For the initial month of engagement, the Platform facilitates the collection of the tuition fee from the Parent/Student to streamline onboarding and coordination of services. A portion of this amount shall be retained by the Platform towards service facilitation, administrative efforts, and operational support (50%), while the remaining amount shall be transferred to the Tutor within a reasonable period following completion of the first month. If the engagement concludes prior to completion of the full month, the payable amount shall be proportionately adjusted based on the number of sessions conducted.
+
+3.2 Subsequent Payments
+From the second month onward, financial arrangements shall be conducted directly between the Tutor and the Parent/Student. The Platform disclaims all responsibility for payment disputes, delays, or defaults thereafter.
+
+3.3 Payment Authority
+No individual, tutor, or third party is authorized to collect payments on behalf of the Platform. Any payments made outside official channels shall be undertaken at the user’s own risk.
+
+3.4 Refund & Adjustment
+Refunds, if any, shall be granted solely at the discretion of the Platform. Service charges and completed sessions are strictly non-refundable.
+
+3.5 Processing Timelines
+All financial transactions are subject to reasonable processing timelines and operational constraints.
+
+🧪 4. TRIAL CLASSES
+Trial classes are extended by the Platform strictly as a limited, conditional, and non-binding facilitative arrangement, intended solely for the purpose of enabling an initial interaction between the Tutor and the Parent/Student, with a view to assessing compatibility, communication effectiveness, instructional methodology, subject comprehension alignment, behavioral comfort, and overall suitability for a potential long-term engagement.
+
+It is expressly clarified, acknowledged, and agreed by all users that trial sessions shall not, under any circumstances, be construed as:
+
+A confirmation or guarantee of future engagement
+A binding contractual relationship between Tutor and Parent/Student
+An assurance of satisfaction, performance, or continuity
+The following conditions shall apply in a strict, absolute, and non-negotiable manner:
+
+1. Limitation of Trial Sessions
+Under no circumstances shall more than two (2) trial sessions be conducted. This limitation is absolute, irrespective of user requests, dissatisfaction, scheduling conflicts, or subjective expectations.
+
+2. Nature and Scope of Trial Engagement
+Trial sessions are exploratory in nature and shall not impose any obligation—financial, professional, or otherwise—on the Platform, the Tutor, or the Parent/Student to proceed further.
+
+3. Non-Compensatory Framework
+Trial sessions shall ordinarily be treated as non-compensable unless otherwise explicitly agreed in writing by the Platform. Any expectation of compensation without such agreement shall be deemed invalid.
+
+4. Platform Non-Intervention Clause
+The Platform shall not be responsible for mediating, supervising, or evaluating the quality, conduct, or outcome of trial sessions beyond facilitating the connection.
+
+5. No Guarantee or Warranty
+The Platform expressly disclaims any and all guarantees, warranties, or representations regarding: Tutor capability or teaching effectiveness, Student responsiveness or participation, Compatibility between the parties.
+
+6. Termination Rights
+The Platform reserves the absolute, unconditional, and unilateral right to terminate, suspend, or discontinue any trial arrangement at any stage, without assigning any reason whatsoever.
+
+7. User Responsibility Acknowledgment
+Users acknowledge that: Participation in trial sessions shall constitute full, informed, and irrevocable acceptance of the above conditions.
+
+🎓 5. TUTOR RESPONSIBILITIES
+Tutors shall maintain professional standards including punctuality, quality teaching, and respectful conduct. Any misconduct, negligence, or misrepresentation may result in immediate termination and restriction.
+
+5.1 Commitment
+Acceptance of an assignment constitutes a binding obligation. Withdrawal without valid reason may lead to suspension.
+
+5.2 Demo Failure
+Failure in two consecutive demos may result in discontinuation of opportunities.
+
+👨👩👧 6. PARENT / STUDENT RESPONSIBILITIES
+Parents/Students shall provide a safe, respectful, and cooperative environment and ensure timely payments. The Platform shall not be liable for disputes between users.
+
+6.1 Misconduct & Legal Escalation
+Users must first report disputes to the Platform and allow reasonable time for resolution. No legal action shall be initiated without prior notification to the Platform. Violation may result in suspension or termination.
+
+6.2 Grievance Redressal
+Grievance Officer: Paradox Team
+Email: contact@paradoxtuition.in
+Phone: +91 63889 53289
+Acknowledgment within 48 hours
+Resolution within 7–10 working days
+
+🔁 7. REPLACEMENT POLICY
+The Platform may, at its sole, exclusive, and unfettered discretion, attempt to facilitate the provision of a replacement Tutor in circumstances including but not limited to dissatisfaction, incompatibility, discontinuation, scheduling conflicts, behavioral concerns, or unforeseen unavailability. However, users expressly acknowledge, agree, and accept that:
+
+1. Non-Obligatory Nature
+The provision of a replacement Tutor is a purely facilitative, goodwill-based effort and shall not be construed as a contractual obligation or guaranteed service.
+
+2. Availability Constraints
+Replacement shall be subject to: Tutor availability, Geographic feasibility, Subject specialization requirements, Operational limitations.
+
+3. No Guarantee of Suitability
+The Platform does not warrant, guarantee, or represent that any replacement Tutor shall meet or exceed user expectations.
+
+4. Limitation on Requests
+Repeated, excessive, or unreasonable requests for replacements may be declined at the sole discretion of the Platform.
+
+5. Platform Immunity
+The Platform shall not be liable for: Delays in replacement, Non-availability of suitable alternatives, Dissatisfaction arising from replacement Tutors.
+
+6. Final Authority Clause
+All decisions regarding replacement shall remain final, binding, and non-negotiable.
+
+🚫 8. NON-CIRCUMVENTION
+Users explicitly, irrevocably, and unconditionally agree that they shall not, directly or indirectly, engage in any act intended to bypass, circumvent, undermine, or otherwise avoid the Platform’s role, involvement, or entitlement in the facilitation of services. This includes, without limitation: Establishing direct financial arrangements outside the Platform, Encouraging off-platform engagement to avoid service charges, Sharing contact details with the intent to bypass the Platform. Any such act shall constitute a serious, material, and fundamental breach of these Terms. In such instances, the Platform reserves the right to: Immediately terminate access without notice, Permanently blacklist the user, Deny all present and future services, Initiate legal proceedings for recovery of damages, losses, or reputational harm. Users acknowledge that this clause is critical to the sustainability, fairness, and operational integrity of the Platform.
+
+🔒 9. CONFIDENTIALITY
+Users undertake a legally binding obligation to maintain strict, absolute, and perpetual confidentiality with respect to all Platform-related information, whether disclosed directly or indirectly. Confidential information shall include, but not be limited to: Revenue models and pricing structures, Business strategies and operational mechanisms, User data and communication details, Internal policies and procedural frameworks. Users shall: Not disclose such information to any third party, Not reproduce or circulate such information, Not utilize such information for personal, competitive, or commercial gain. Any breach shall result in: Immediate termination, Permanent blacklisting, Legal action, including claims for damages. This obligation shall survive indefinitely beyond termination.
+
+⚠ 10. MISUSE & FRAUD
+The Platform enforces a strict zero-tolerance policy against any form of misuse, abuse, fraud, or unethical conduct. Misuse shall include, but is not limited to: Submission of false, misleading, or fabricated information, Identity misrepresentation or impersonation, Harassment, abuse, or inappropriate conduct, Financial manipulation or payment fraud, Exploitation of system vulnerabilities. Upon detection, the Platform may: Immediately suspend or terminate access, Permanently blacklist the user, Report to legal authorities, Initiate civil or criminal proceedings. The Platform shall bear no liability for any consequences arising from such enforcement actions.
+
+⚖ 11. LIMITATION OF LIABILITY
+To the maximum extent permissible under law, the Platform shall be absolutely, unequivocally, and entirely exempt from any liability whatsoever, whether direct, indirect, incidental, consequential, special, exemplary, or punitive. This includes, but is not limited to: Academic failure or underperformance, Tutor negligence or misconduct, Student non-compliance or lack of effort, Financial losses or missed opportunities, Emotional distress, inconvenience, or dissatisfaction. Users expressly acknowledge that: The Platform acts solely as a facilitator, All risks are borne by the users. Under no circumstances shall the Platform’s liability exceed the service fee received.
+
+🛡 12. INDEMNITY
+Users agree to irrevocably indemnify, defend, and hold harmless the Platform from any and all claims, liabilities, damages, losses, costs, expenses, and legal fees arising from: Breach of these Terms, Misuse of the Platform, Violation of laws, Infringement of rights. This indemnity shall: Be continuing and unconditional, Survive termination indefinitely.
+
+📉 13. NO GUARANTEE OF RESULTS
+The Platform expressly disclaims any and all guarantees, assurances, warranties, or representations regarding academic outcomes. Users acknowledge that outcomes depend on multiple independent and uncontrollable factors, including: Student effort, Tutor compatibility, External academic conditions. No claim shall arise against the Platform for unsatisfactory results.
+
+🔍 14. VERIFICATION DISCLAIMER
+The Platform does not independently verify Tutor credentials unless explicitly stated. Users acknowledge full responsibility for conducting due diligence and waive all claims arising from reliance on Platform-listed information.
+
+📵 15. COMMUNICATION CONSENT
+Users provide unconditional consent to receive communications through all channels, including but not limited to calls, SMS, email, and WhatsApp. Such communication may include operational updates, promotions, and service notifications.
+
+🌐 16. SERVICE AVAILABILITY
+The Platform reserves unrestricted rights to modify, suspend, or discontinue services at any time without any liability. No liability shall arise from service interruptions, technical failures, or downtime.
+
+📊 17. DATA USAGE
+User data may be processed, analyzed, stored, and utilized for operational, analytical, and improvement purposes. All such use shall comply with applicable standards while protecting identifiable data.
+
+⚡ 18. FORCE MAJEURE
+The Platform shall not be liable for any delay or failure due to events beyond its control, including natural disasters, governmental actions, or technical disruptions.
+
+🔗 19. OFF-PLATFORM DEALINGS
+The Platform bears no responsibility whatsoever for any dealings outside its ecosystem. Users engaging independently do so entirely at their own risk.
+
+📜 20. INTELLECTUAL PROPERTY
+All intellectual property rights remain exclusively vested in the Platform. Unauthorized use shall result in legal action.
+
+⚖ 21. DISPUTE RESOLUTION
+The Platform shall act as mediator, and its decision shall be final and binding.
+
+🌍 22. GOVERNING LAW
+These Terms shall be governed exclusively by Indian law, and disputes shall fall under appropriate jurisdiction.
+
+✅ 23. ACCEPTANCE
+By proceeding, the user confirms: “I have read, understood, and agree to be legally bound by these Terms & Conditions.”`}
+                </div>
+              )}
             </div>
 
             {/* Submit */}
