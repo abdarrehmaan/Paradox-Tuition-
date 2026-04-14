@@ -5,6 +5,9 @@ on:
     branches:
       - main
 
+permissions:
+  contents: write
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -14,8 +17,7 @@ jobs:
       # 1. Checkout the main branch source code
       - name: Checkout source code
         uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.DEPLOY_TOKEN }}
+
 
       # 2. Setup Node.js
       - name: Setup Node.js
@@ -39,7 +41,7 @@ jobs:
       - name: Deploy dist to dist branch
         uses: peaceiris/actions-gh-pages@v4
         with:
-          personal_token: ${{ secrets.DEPLOY_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: dist
           publish_dir: ./dist
           force_orphan: true
