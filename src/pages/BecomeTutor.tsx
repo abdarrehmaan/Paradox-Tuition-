@@ -337,18 +337,64 @@ Acceptance of an assignment constitutes a binding obligation. Withdrawal without
 5.2 Demo Failure
 Failure in two consecutive demos may result in discontinuation of opportunities.
 
-👨👩👧 6. PARENT / STUDENT RESPONSIBILITIES
-Parents/Students shall provide a safe, respectful, and cooperative environment and ensure timely payments. The Platform shall not be liable for disputes between users.
+👨‍👩‍👧 6. PARENT / STUDENT RESPONSIBILITIES
 
-6.1 Misconduct & Legal Escalation
-Users must first report disputes to the Platform and allow reasonable time for resolution. No legal action shall be initiated without prior notification to the Platform. Violation may result in suspension or termination.
+📌 6.1 General Responsibilities
+Parents/Students shall:
+• Provide a Safe and Respectful Environment: Ensure that the Tutor is treated with dignity, respect, and professionalism at all times, whether sessions are conducted online or offline. Any form of harassment, intimidation, discrimination, or inappropriate behavior shall be strictly prohibited.
+• Ensure Timely and Fair Payments: Adhere to the agreed fee structure and ensure that payments are made promptly and in good faith, without unnecessary delay, withholding, or dispute, except where justified.
+• Maintain Transparency and Honesty: Provide accurate and complete information regarding academic requirements, expectations, schedule, and any relevant details necessary for effective service delivery.
+• Facilitate a Conducive Learning Environment: Ensure that the student is available, prepared, and in a suitable environment for learning during scheduled sessions.
 
-6.2 Grievance Redressal
-Grievance Officer: Paradox Team
-Email: contact@paradoxtuition.in
-Phone: +91 63889 53289
-Acknowledgment within 48 hours
-Resolution within 7–10 working days
+⚠️ 6.2 Prohibited Conduct
+Parents/Students shall not:
+• Engage in any form of abusive, threatening, or disrespectful conduct toward Tutors
+• Misrepresent academic needs, schedules, or commitments
+• Attempt to exploit, manipulate, or unfairly pressure Tutors
+• Interfere with the Tutor’s ability to deliver services effectively
+• Encourage or participate in any activity that violates Platform policies, including non-circumvention
+
+⚖️ 6.3 Misconduct and Escalation Protocol
+In the event of any dispute, concern, or allegation of misconduct:
+• Parents/Students shall first notify the Platform and provide reasonable details of the issue
+• The Platform shall be given a reasonable opportunity to review, mediate, and attempt resolution
+Users expressly agree that:
+• No formal complaint, legal proceeding, or escalation to authorities shall be initiated without first informing the Platform
+• Cooperation in good faith during the resolution process is mandatory
+Failure to follow this protocol may result in restriction or termination of access to Platform services.
+
+🚫 6.4 Platform Liability Disclaimer
+The Platform acts solely as an intermediary facilitating connections and shall not be held liable for:
+• Disputes, disagreements, or conflicts between Parents/Students and Tutors
+• Quality, effectiveness, or outcomes of teaching services
+• Behavior, conduct, or actions of Tutors or Students during or after engagement
+• Any financial, academic, emotional, or personal consequences arising from such interactions
+Users acknowledge that all engagements are independent arrangements entered into at their own discretion and risk.
+
+🧾 6.5 Responsibility for Independent Decisions
+Parents/Students are solely responsible for:
+• Evaluating the suitability of a Tutor prior to engagement
+• Monitoring the progress and conduct of the learning process
+• Making independent decisions regarding continuation, modification, or termination of services
+The Platform does not guarantee compatibility, satisfaction, or outcomes.
+
+🔒 6.6 Continuing Obligations
+The responsibilities outlined herein shall:
+• Apply throughout the duration of engagement
+• Continue to apply to all interactions originating from the Platform
+• Remain enforceable even after cessation of services where relevant
+
+⚠️ 6.7 Consequences of Breach
+Any violation of this section may result in, at the sole discretion of the Platform:
+• Suspension or termination of access
+• Restriction from future services
+• Reporting or escalation in case of serious misconduct
+
+🧠 6.8 Acknowledgment
+By using the Platform, Parents/Students acknowledge that:
+• They have read and understood these responsibilities
+• They agree to comply fully and in good faith
+• These obligations are essential to maintaining a safe, fair, and effective ecosystem for all users
 
 🔁 7. REPLACEMENT POLICY
 The Platform may, at its sole, exclusive, and unfettered discretion, attempt to facilitate the provision of a replacement Tutor in circumstances including but not limited to dissatisfaction, incompatibility, discontinuation, scheduling conflicts, behavioral concerns, or unforeseen unavailability. However, users expressly acknowledge, agree, and accept that:
@@ -383,38 +429,264 @@ The Platform enforces a strict zero-tolerance policy against any form of misuse,
 ⚖ 11. LIMITATION OF LIABILITY
 To the maximum extent permissible under law, the Platform shall be absolutely, unequivocally, and entirely exempt from any liability whatsoever, whether direct, indirect, incidental, consequential, special, exemplary, or punitive. This includes, but is not limited to: Academic failure or underperformance, Tutor negligence or misconduct, Student non-compliance or lack of effort, Financial losses or missed opportunities, Emotional distress, inconvenience, or dissatisfaction. Users expressly acknowledge that: The Platform acts solely as a facilitator, All risks are borne by the users. Under no circumstances shall the Platform’s liability exceed the service fee received.
 
-🛡 12. INDEMNITY
-Users agree to irrevocably indemnify, defend, and hold harmless the Platform from any and all claims, liabilities, damages, losses, costs, expenses, and legal fees arising from: Breach of these Terms, Misuse of the Platform, Violation of laws, Infringement of rights. This indemnity shall: Be continuing and unconditional, Survive termination indefinitely.
+🛡️ 12. INDEMNITY (Expanded & Legally Reinforced Clause)
+Users expressly, irrevocably, and unconditionally agree to indemnify, defend, and hold harmless the Platform, its owners, affiliates, employees, representatives, agents, and partners from and against any and all claims, demands, actions, proceedings, liabilities, damages, losses, costs, expenses, and legal fees (including reasonable attorney fees) arising out of or in connection with:
+• Breach of Terms: Any violation, non-compliance, or breach of these Terms & Conditions, whether intentional or unintentional.
+• Misuse of the Platform: Any unauthorized, unlawful, unethical, or improper use of the Platform, including misuse of services, features, or user interactions.
+• Violation of Applicable Laws: Any act or omission that results in non-compliance with applicable laws, regulations, or legal obligations.
+• Infringement of Rights: Any violation or alleged violation of third-party rights, including intellectual property rights, privacy rights, contractual rights, or any other legal entitlement.
+• User-to-User Interactions: Any dispute, misconduct, or claim arising between Tutors and Parents/Students, including financial, behavioral, or service-related issues.
 
-📉 13. NO GUARANTEE OF RESULTS
-The Platform expressly disclaims any and all guarantees, assurances, warranties, or representations regarding academic outcomes. Users acknowledge that outcomes depend on multiple independent and uncontrollable factors, including: Student effort, Tutor compatibility, External academic conditions. No claim shall arise against the Platform for unsatisfactory results.
+⚖️ 12.1 Scope and Nature of Indemnity
+This indemnity shall:
+• Be Continuing and Absolute: Remain in effect at all times, regardless of the status of the user’s engagement with the Platform.
+• Be Unconditional: Apply irrespective of whether the Platform has been negligent or otherwise involved, except where prohibited by law.
+• Survive Termination: Continue indefinitely even after termination, suspension, or discontinuation of services.
+• Cover Direct and Indirect Losses: Extend to all forms of damages, including direct, indirect, incidental, consequential, and reputational losses.
 
-🔍 14. VERIFICATION DISCLAIMER
-The Platform does not independently verify Tutor credentials unless explicitly stated. Users acknowledge full responsibility for conducting due diligence and waive all claims arising from reliance on Platform-listed information.
+🧾 12.2 Defense and Cooperation
+Users agree to:
+• Cooperate fully with the Platform in the defense of any claim
+• Provide necessary information, documents, or assistance when required
+• Not settle or resolve any claim affecting the Platform without prior written consent
 
-📵 15. COMMUNICATION CONSENT
-Users provide unconditional consent to receive communications through all channels, including but not limited to calls, SMS, email, and WhatsApp. Such communication may include operational updates, promotions, and service notifications.
+🔒 12.3 Platform Rights
+The Platform reserves the right to:
+• Assume exclusive defense and control of any matter subject to indemnification
+• Recover all costs incurred, including legal and administrative expenses
+• Take appropriate action to protect its interests
+
+📉 13. NO GUARANTEE OF RESULTS (Expanded & Strengthened Clause)
+The Platform expressly disclaims any and all guarantees, warranties, assurances, or representations—whether express or implied—regarding academic outcomes, performance improvements, or results arising from the use of its services.
+
+📊 13.1 Nature of Services
+Users acknowledge that:
+• The Platform only facilitates connections between Tutors and Students
+• It does not control, supervise, or influence the delivery of educational services
+• It does not evaluate or guarantee the effectiveness of teaching methods
+
+🔍 13.2 Factors Affecting Outcomes
+Academic and learning outcomes are dependent on numerous independent and uncontrollable factors, including but not limited to:
+• Student Effort and Participation: Level of dedication, discipline, and consistency in learning.
+• Tutor Compatibility: Alignment between teaching style and student learning preferences.
+• External Academic Conditions: School curriculum, exam patterns, institutional support, and environment.
+• Personal and Environmental Factors: Health, mental focus, home environment, and external distractions.
+
+⚠️ 13.3 Disclaimer of Liability
+Accordingly:
+• The Platform shall not be held liable for any dissatisfaction, underperformance, or failure to achieve expected results
+• No claim, demand, or action shall arise against the Platform based on academic outcomes
+
+🧠 13.4 User Acknowledgment
+Users expressly acknowledge that:
+• Educational outcomes are inherently uncertain
+• Engagement with Tutors is undertaken at their own discretion and risk
+
+🔍 14. VERIFICATION DISCLAIMER (Expanded & Strengthened Clause)
+The Platform does not independently verify, authenticate, or guarantee the credentials, qualifications, experience, or background of Tutors unless explicitly stated.
+
+📌 14.1 Nature of Information
+Users acknowledge that:
+• Information provided on the Platform is primarily based on self-declaration by Tutors
+• The Platform may not conduct background checks, document verification, or credential validation in all cases
+
+⚠️ 14.2 User Responsibility
+Users are solely responsible for:
+• Conducting independent due diligence before engaging with any Tutor
+• Verifying credentials, qualifications, and suitability
+• Assessing compatibility and trustworthiness
+
+🚫 14.3 Limitation of Liability
+The Platform shall not be held liable for:
+• Misrepresentation, inaccuracy, or falsification of information by Tutors
+• Any consequences arising from reliance on such information
+• Any loss, damage, or dispute resulting from such reliance
+
+🧾 14.4 Waiver of Claims
+Users expressly waive any and all claims against the Platform arising from or related to:
+• Verification failures
+• Reliance on Platform-listed information
+• Engagement decisions based on such information
+
+📵 15. COMMUNICATION CONSENT (Expanded & Legally Reinforced Clause)
+By registering with or using the Platform, users provide their explicit, informed, unconditional, and continuing consent to receive communications from the Platform through various channels, including but not limited to:
+• Voice calls
+• SMS and messaging services
+• Email communications
+• WhatsApp or similar digital communication platforms
+
+📩 15.1 Nature of Communications
+Such communications may include:
+• Operational Messages: Account updates, onboarding information, session confirmations, and service-related notifications.
+• Transactional Communications: Payment confirmations, reminders, and financial updates.
+• Support and Grievance Responses: Replies to user queries, complaints, or assistance requests.
+• Promotional and Informational Content: Offers, updates, announcements, and relevant service-related information.
+
+⚠️ 15.2 User Acknowledgment
+Users acknowledge that:
+• Certain communications are essential for service delivery and cannot be opted out of
+• Communication may occur at reasonable times as per operational requirements
+• Standard messaging or communication charges may apply as per user’s telecom provider
+
+🚫 15.3 Limitation of Liability
+The Platform shall not be held liable for:
+• Delays, failures, or non-delivery of messages due to network or third-party issues
+• Miscommunication arising from incorrect contact details provided by users
+
+🔒 15.4 Continuing Consent
+This consent shall:
+• Remain valid throughout the duration of the user’s association with the Platform
+• Continue unless explicitly withdrawn where applicable
+• Extend to all communication channels used by the Platform
 
 🌐 16. SERVICE AVAILABILITY
-The Platform reserves unrestricted rights to modify, suspend, or discontinue services at any time without any liability. No liability shall arise from service interruptions, technical failures, or downtime.
+The Platform reserves the absolute, unrestricted, and discretionary right to modify, suspend, restrict, limit, or discontinue any part of its services, features, functionalities, or operations at any time, with or without prior notice and without incurring any liability whatsoever.
+
+⚙️ 16.1 Nature of Service Provision
+Users acknowledge and agree that:
+• The Platform operates on a best-effort basis and does not guarantee uninterrupted, continuous, or error-free availability of services
+• Access to the Platform may be affected by maintenance activities, system upgrades, technical issues, or external dependencies
+
+⚠️ 16.2 Service Interruptions
+Interruptions may occur due to, but not limited to:
+• Scheduled or unscheduled maintenance
+• Server downtime or infrastructure failures
+• Internet connectivity issues
+• Third-party service disruptions
+
+🚫 16.3 Limitation of Liability
+The Platform shall not be liable for:
+• Temporary or permanent unavailability of services
+• Loss of data, opportunities, or business arising from service interruptions
+• Any inconvenience or disruption caused to users
+
+🔒 16.4 Platform Discretion
+The Platform reserves the right to:
+• Introduce, remove, or alter features at its sole discretion
+• Restrict access to certain users or regions
+• Modify service structure without obligation to compensate users
 
 📊 17. DATA USAGE
-User data may be processed, analyzed, stored, and utilized for operational, analytical, and improvement purposes. All such use shall comply with applicable standards while protecting identifiable data.
+The Platform may collect, process, store, analyze, and utilize user data in a lawful and structured manner for operational, analytical, and service improvement purposes.
+
+📌 17.1 Scope of Data Usage
+Data may be used for:
+• Operational Efficiency: Managing user interactions, matching services, and platform functionality
+• Analytical Insights: Understanding user behavior, trends, and engagement patterns
+• Service Enhancement: Improving features, performance, and user experience
+• Security and Monitoring: Detecting fraud, preventing misuse, and maintaining system integrity
+
+🔍 17.2 Nature of Data Processing
+The Platform may:
+• Aggregate and anonymize user data for analytical purposes
+• Process data using automated or manual systems
+• Retain data for internal evaluation and improvement
+
+🔒 17.3 Data Protection Commitment
+All such usage shall:
+• Be carried out in accordance with applicable legal and regulatory standards
+• Avoid disclosure of personally identifiable information beyond necessary purposes
+• Maintain reasonable safeguards to protect user privacy
+
+⚠️ 17.4 Limitation of Liability
+The Platform shall not be liable for:
+• Analytical outcomes derived from aggregated data
+• Any indirect consequences arising from internal data usage
 
 ⚡ 18. FORCE MAJEURE
-The Platform shall not be liable for any delay or failure due to events beyond its control, including natural disasters, governmental actions, or technical disruptions.
+The Platform shall not be held liable or responsible for any failure, delay, interruption, or inability to perform its obligations where such failure arises due to events beyond its reasonable control.
+
+🌍 18.1 Covered Events
+Such events include, but are not limited to:
+• Natural disasters (earthquakes, floods, fires, pandemics)
+• Governmental actions, regulations, or restrictions
+• War, civil unrest, or public disturbances
+• Power outages or infrastructure breakdowns
+• Internet or telecommunication failures
+• Cyber-attacks or system-wide disruptions
+
+⚠️ 18.2 Effect of Force Majeure
+In such circumstances:
+• Obligations of the Platform shall be suspended for the duration of the event
+• The Platform shall not be considered in breach of its obligations
+
+🔄 18.3 Resumption of Services
+The Platform shall make reasonable efforts to resume normal operations once the Force Majeure event ceases.
 
 🔗 19. OFF-PLATFORM DEALINGS
-The Platform bears no responsibility whatsoever for any dealings outside its ecosystem. Users engaging independently do so entirely at their own risk.
+The Platform shall bear no responsibility, liability, or accountability whatsoever for any dealings, communications, agreements, or transactions that occur outside its ecosystem.
 
-📜 20. INTELLECTUAL PROPERTY
-All intellectual property rights remain exclusively vested in the Platform. Unauthorized use shall result in legal action.
+📌 19.1 Independent Engagements
+Users engaging in direct or independent arrangements:
+• Do so entirely at their own discretion and risk
+• Assume full responsibility for outcomes, payments, and disputes
 
-⚖ 21. DISPUTE RESOLUTION
-The Platform shall act as mediator, and its decision shall be final and binding.
+⚠️ 19.2 Limitation of Platform Involvement
+The Platform shall not:
+• Mediate disputes arising from off-platform interactions
+• Provide support, refunds, or intervention in such cases
+• Be liable for any losses or damages incurred
 
-🌍 22. GOVERNING LAW
-These Terms shall be governed exclusively by Indian law, and disputes shall fall under appropriate jurisdiction.
+🚫 19.3 Waiver of Claims
+Users expressly waive any and all claims against the Platform arising from:
+• Off-platform agreements
+• Independent financial transactions
+• Direct communication outside Platform control
+
+📜 20. INTELLECTUAL PROPERTY 
+All intellectual property rights associated with the Platform are and shall remain the exclusive property of the Platform.
+
+🧠 20.1 Scope of Intellectual Property
+This includes, but is not limited to:
+• Website design, layout, and structure
+• Logos, branding elements, and trademarks
+• Content, text, graphics, and materials
+• Software, features, and functionality
+
+🚫 20.2 Restrictions on Use
+Users shall not:
+• Copy, reproduce, distribute, or modify any content
+• Use Platform materials for commercial purposes
+• Reverse-engineer or attempt to extract proprietary elements
+
+⚖️ 20.3 Enforcement Rights
+Any unauthorized use shall result in:
+• Immediate legal action
+• Claims for damages, injunctions, or penalties
+• Restriction of access to the Platform
+
+⚖️ 21. DISPUTE RESOLUTION
+In the event of any dispute, disagreement, or claim arising between users or involving the Platform:
+
+📌 21.1 Internal Resolution First
+• Users agree to first approach the Platform for resolution
+• The Platform shall attempt to mediate in good faith
+
+⚠️ 21.2 Binding Nature of Decision
+Users agree that:
+• The Platform’s decision shall be final and binding for matters within its scope
+• Users shall cooperate in the resolution process
+
+🚫 21.3 Limitation of Platform Liability
+The Platform’s role is limited to facilitation and mediation and shall not be liable for:
+• Outcomes of disputes
+• Enforcement of user agreements
+
+🧾 21.4 Escalation
+Where disputes cannot be resolved internally:
+• Parties may pursue remedies under applicable law
+• Subject to jurisdiction defined herein
+
+🇮🇳 22. GOVERNING LAW & JURISDICTION
+These Terms & Conditions shall be governed by and construed in accordance with the laws of India.
+
+⚖️ 22.1 Jurisdiction
+• All disputes arising out of or in connection with these Terms shall be subject to the exclusive jurisdiction of the competent courts in the applicable region
+• Users agree to submit to such jurisdiction without objection
+
+🧾 22.2 Applicability of Law
+• Any provision found invalid under applicable law shall not affect the enforceability of remaining provisions
+• The Terms shall be interpreted in a manner consistent with applicable legal frameworks
 
 ✅ 23. ACCEPTANCE
 By proceeding, the user confirms: “I have read, understood, and agree to be legally bound by these Terms & Conditions.”`}
