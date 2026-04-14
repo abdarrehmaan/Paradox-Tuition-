@@ -93,6 +93,14 @@ const Footer: React.FC = () => {
             <Link to="/privacy" className="hover:text-slate-200 transition-colors">Privacy Policy</Link>
             <Link to="/terms" className="hover:text-slate-200 transition-colors">Terms and Conditions</Link>
           </div>
+          <a
+            href="https://mine-vrpo.onrender.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-slate-500 hover:text-brand-lightBlue transition-colors duration-300 text-xs tracking-wide"
+          >
+            Builds by <span className="font-semibold text-slate-400 hover:text-brand-lightBlue">abdarrehmaan</span>
+          </a>
         </div>
       </div>
     </footer>
