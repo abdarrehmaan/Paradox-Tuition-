@@ -60,7 +60,7 @@ const Home: React.FC = () => {
 
             {/* Right: 3D Book — vertically centred to the text block */}
             <div
-              className="relative flex-shrink-0 hidden lg:flex items-center justify-center animate-fade-in self-center"
+              className="relative flex-shrink-0 flex items-center justify-center animate-fade-in self-center mt-8 lg:mt-0"
               style={{ width: '360px', height: '440px', animationDelay: '400ms' }}
             >
               {/* Ambient glow behind book */}
