@@ -73,7 +73,7 @@ const Footer: React.FC = () => {
             <ul className="space-y-5 text-sm">
               <li className="flex items-start gap-4 p-3 rounded-xl bg-white/5 border border-white/5 hover:border-brand-lightBlue/30 transition-colors">
                 <MapPin className="h-5 w-5 text-brand-lightBlue shrink-0" />
-                <span className="leading-relaxed text-slate-300">Kalandipuram, Prayagraj</span>
+                <span className="leading-relaxed text-slate-300">Kalindipuram Prayagraj</span>
               </li>
               <li className="flex items-center gap-4 p-3 rounded-xl bg-white/5 border border-white/5 hover:border-brand-lightBlue/30 transition-colors">
                 <Phone className="h-5 w-5 text-brand-lightBlue shrink-0" />
