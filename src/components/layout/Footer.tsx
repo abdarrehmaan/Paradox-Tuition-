@@ -99,7 +99,7 @@ const Footer: React.FC = () => {
             rel="noopener noreferrer"
             className="text-slate-500 hover:text-brand-lightBlue transition-colors duration-300 text-xs tracking-wide"
           >
-            Builds by <span className="font-semibold text-slate-400 hover:text-brand-lightBlue">abdarrehmaan</span>
+            Built by <span className="font-semibold text-slate-400 hover:text-brand-lightBlue">abdarrehmaan</span>
           </a>
         </div>
       </div>
