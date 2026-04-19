@@ -69,16 +69,7 @@ const Navbar: React.FC = () => {
                     Logout
                   </Button>
                 </>
-              ) : (
-                <>
-                  <Link to="/login">
-                    <Button variant="ghost" size="sm">Login</Button>
-                  </Link>
-                  <Link to="/signup">
-                    <Button variant="primary" size="sm">Sign Up</Button>
-                  </Link>
-                </>
-              )}
+              ) : null}
             </div>
           </div>
 
@@ -125,16 +116,7 @@ const Navbar: React.FC = () => {
                     Logout
                   </Button>
                 </>
-              ) : (
-                <div className="flex gap-3 px-2">
-                  <Link to="/login" onClick={() => setIsOpen(false)} className="flex-1">
-                    <Button variant="secondary" className="w-full justify-center">Login</Button>
-                  </Link>
-                  <Link to="/signup" onClick={() => setIsOpen(false)} className="flex-1">
-                    <Button variant="primary" className="w-full justify-center">Sign Up</Button>
-                  </Link>
-                </div>
-              )}
+              ) : null}
             </div>
           </div>
         </div>

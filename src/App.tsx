@@ -18,6 +18,7 @@ import Signup from './pages/Signup';
 import DonateBook from './pages/DonateBook';
 import Terms from './pages/Terms';
 import Privacy from './pages/Privacy';
+import AdminDashboard from './pages/AdminDashboard';
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/privacy" element={<Privacy />} />
+          <Route path="/admin" element={<AdminDashboard />} />
         </Routes>
       </main>
       <Footer />
