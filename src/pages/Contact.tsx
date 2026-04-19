@@ -66,8 +66,7 @@ const Contact: React.FC = () => {
                 <Mail className="w-6 h-6 text-brand-blue" />
               </div>
               <h3 className="font-bold text-brand-dark text-lg mb-2">Email Us</h3>
-              <p className="text-gray-600 mb-1">contact@paradoxtuition.in</p>
-              <p className="text-gray-600">support@paradoxtuition.in</p>
+              <p className="text-gray-600 mb-1">contact@paradoxconsultancyservices.com</p>
             </div>
 
             <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 text-center hover:shadow-md transition-shadow">
