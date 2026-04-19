@@ -86,18 +86,28 @@ const BecomeTutor: React.FC = () => {
             Thank you for applying to Paradox Tuition Services! Our team will review your profile.
           </p>
           <div className="bg-green-50 border border-green-200 rounded-xl p-6 mb-8 text-center">
-            <h3 className="font-bold text-green-800 mb-2">Next Step: Join Our Channel</h3>
+            <h3 className="font-bold text-green-800 mb-2">Next Step: Join Our Channels</h3>
             <p className="text-green-700 text-sm mb-4">
-              Please join our WhatsApp channel for Home tuition leads and School Jobs.
+              Please join your relevant WhatsApp channel for Home tuition leads and School Jobs.
             </p>
-            <a 
-              href="https://whatsapp.com/channel/0029VbCVOiQLdQeeHXvYtM16" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center bg-[#25D366] text-white px-6 py-3 rounded-full font-bold hover:bg-[#128C7E] transition-colors shadow-md hover:shadow-lg"
-            >
-              Join WhatsApp Channel
-            </a>
+            <div className="flex flex-col gap-3">
+              <a 
+                href="https://whatsapp.com/channel/0029VbCVOiQLdQeeHXvYtM16" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-full inline-flex items-center justify-center bg-[#25D366] text-white px-6 py-3 rounded-full font-bold hover:bg-[#128C7E] transition-colors shadow-md hover:shadow-lg text-sm md:text-base"
+              >
+                Join Prayagraj Channel
+              </a>
+              <a 
+                href="https://whatsapp.com/channel/0029VbCAk7GA2pLGRIiakm3P" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-full inline-flex items-center justify-center bg-[#25D366] text-white px-6 py-3 rounded-full font-bold hover:bg-[#128C7E] transition-colors shadow-md hover:shadow-lg text-sm md:text-base"
+              >
+                Join Lucknow Channel
+              </a>
+            </div>
           </div>
           <button
             onClick={() => {
@@ -150,7 +160,10 @@ const BecomeTutor: React.FC = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">Phone Number *</label>
-                  <input required name="phone" value={formData.phone} onChange={handleChange} type="tel" placeholder="+91 92784 93998" className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-brand-blue/20 outline-none transition-colors" />
+                  <input required name="phone" value={formData.phone} onChange={(e) => {
+                    e.target.value = e.target.value.replace(/\\D/g, '');
+                    handleChange(e);
+                  }} type="tel" pattern="[0-9]{10}" minLength={10} maxLength={10} title="Please enter a valid 10-digit phone number" placeholder="9278493998" className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-brand-blue/20 outline-none transition-colors" />
                 </div>
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">Email Address *</label>

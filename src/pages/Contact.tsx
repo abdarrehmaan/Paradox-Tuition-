@@ -122,9 +122,16 @@ const Contact: React.FC = () => {
                     required
                     name="phone"
                     value={formData.phone}
-                    onChange={handleChange}
+                    onChange={(e) => {
+                      e.target.value = e.target.value.replace(/\\D/g, '');
+                      handleChange(e);
+                    }}
                     type="tel"
-                    placeholder="+91 63889 53289"
+                    pattern="[0-9]{10}"
+                    minLength={10}
+                    maxLength={10}
+                    title="Please enter a valid 10-digit phone number"
+                    placeholder="6388953289"
                     className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-brand-blue/20 outline-none transition-colors"
                   />
                 </div>
@@ -185,19 +192,25 @@ const Contact: React.FC = () => {
         </div>
       </div>
 
-      {/* Map Section */}
-      <div className="w-full h-96 bg-gray-200 relative overflow-hidden group">
-        <iframe 
-          title="Paradox Tuition Location"
-          src="https://maps.google.com/maps?q=Prayagraj&t=&z=13&ie=UTF8&iwloc=&output=embed" 
-          width="100%" 
-          height="100%" 
-          style={{ border: 0 }} 
-          allowFullScreen 
-          loading="lazy" 
-          referrerPolicy="no-referrer-when-downgrade"
-          className="grayscale-[30%] hover:grayscale-0 transition-all duration-500"
-        ></iframe>
+      {/* Service Locations Section */}
+      <div className="container-custom py-16">
+        <div className="text-center mb-10">
+          <h2 className="text-3xl font-bold text-brand-dark mb-4">Our Service Locations</h2>
+          <p className="text-gray-600 max-w-2xl mx-auto">We provide premium home tutoring and online classes across major cities.</p>
+        </div>
+        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
+          {['Prayagraj', 'Lucknow', 'Kanpur', 'Delhi NCR', 'Mumbai', 'Bangalore'].map((city) => (
+            <div key={city} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group">
+              <div className="w-14 h-14 bg-blue-50 text-brand-blue rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-brand-blue group-hover:text-white transition-colors duration-300">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+              </div>
+              <h3 className="font-bold text-gray-800 text-lg">{city}</h3>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

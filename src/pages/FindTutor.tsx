@@ -144,9 +144,16 @@ const FindTutor: React.FC = () => {
                     required
                     name="phone"
                     value={formData.phone}
-                    onChange={handleChange}
+                    onChange={(e) => {
+                      e.target.value = e.target.value.replace(/\\D/g, '');
+                      handleChange(e);
+                    }}
                     type="tel"
-                    placeholder="+91 98765 43210"
+                    pattern="[0-9]{10}"
+                    minLength={10}
+                    maxLength={10}
+                    title="Please enter a valid 10-digit phone number"
+                    placeholder="9876543210"
                     className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-brand-blue/20 outline-none transition-colors"
                   />
                 </div>

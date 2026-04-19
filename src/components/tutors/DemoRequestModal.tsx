@@ -108,9 +108,16 @@ const DemoRequestModal: React.FC<DemoRequestModalProps> = ({ isOpen, onClose, tu
               name="phone"
               required
               value={formData.phone}
-              onChange={handleChange}
+              onChange={(e) => {
+                e.target.value = e.target.value.replace(/\\D/g, '');
+                handleChange(e);
+              }}
+              pattern="[0-9]{10}"
+              minLength={10}
+              maxLength={10}
+              title="Please enter a valid 10-digit phone number"
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-blue focus:border-brand-blue outline-none transition-colors"
-              placeholder="Enter your phone number"
+              placeholder="9876543210"
             />
           </div>
 
