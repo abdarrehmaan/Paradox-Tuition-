@@ -23,7 +23,7 @@ const Navbar: React.FC = () => {
     { name: 'Teachers', path: '/find-tutors' },
     { name: 'Request a Tutor', path: '/find-tutor' },
     { name: 'Become a Tutor', path: '/become-tutor' },
-    { name: 'Donate Books', path: '/donate-book' },
+    { name: 'Request / Donate book', path: '/donate-book' },
     { name: 'About Us', path: '/about' },
     { name: 'Contact Us', path: '/contact' },
   ];
