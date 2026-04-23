@@ -1,15 +1,47 @@
 import React, { useState, useEffect } from 'react';
 import { CheckCircle, BookHeart, BookOpen, MapPin, Book, MessageCircle } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { toast } from 'sonner';
+
+const donateBookSchema = z.object({
+  full_name: z.string().min(2, 'Name must be at least 2 characters'),
+  phone: z.string().min(10, 'Phone must be at least 10 digits').regex(/^\d+$/, 'Only numbers allowed'),
+  email: z.string().email('Invalid email address').optional().or(z.literal('')),
+  book_title: z.string().min(2, 'Book title is required'),
+  subject_class: z.string().min(2, 'Class/Subject is required'),
+  condition: z.string().min(1, 'Please select a condition'),
+  pickup_address: z.string().min(5, 'Please provide a full address'),
+  additional_notes: z.string().optional(),
+});
+
+type DonateBookFormValues = z.infer<typeof donateBookSchema>;
 
 const DonateBook: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'donate' | 'request'>('donate');
   const [books, setBooks] = useState<any[]>([]);
   const [loadingBooks, setLoadingBooks] = useState(false);
 
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting, isSubmitSuccessful },
+  } = useForm<DonateBookFormValues>({
+    resolver: zodResolver(donateBookSchema),
+    defaultValues: {
+      full_name: '',
+      phone: '',
+      email: '',
+      book_title: '',
+      subject_class: '',
+      condition: '',
+      pickup_address: '',
+      additional_notes: '',
+    }
+  });
 
   useEffect(() => {
     if (activeTab === 'request') {
@@ -29,63 +61,31 @@ const DonateBook: React.FC = () => {
       setBooks(data || []);
     } catch (err: any) {
       console.error('Error fetching books:', err);
+      toast.error('Failed to load books');
     } finally {
       setLoadingBooks(false);
     }
   };
 
-  const [formData, setFormData] = useState({
-    full_name: '',
-    phone: '',
-    email: '',
-    book_title: '',
-    subject_class: '',
-    condition: '',
-    pickup_address: '',
-    additional_notes: '',
-  });
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-  ) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
-
+  const onSubmit = async (data: DonateBookFormValues) => {
     try {
       const { error: dbError } = await supabase
         .from('book_donations')
-        .insert([formData]);
+        .insert([data]);
       if (dbError) throw dbError;
 
-      setIsSubmitted(true);
+      toast.success('Donation Request Submitted!', {
+        description: 'Thank you for your generous contribution.',
+      });
     } catch (err: any) {
       console.error('Error submitting donation:', err);
-      setError(err.message || 'An error occurred while submitting your donation.');
-    } finally {
-      setLoading(false);
+      toast.error('Submission Failed', {
+        description: err.message || 'An error occurred while submitting your donation.',
+      });
     }
   };
 
-  const resetForm = () => {
-    setIsSubmitted(false);
-    setFormData({
-      full_name: '',
-      phone: '',
-      email: '',
-      book_title: '',
-      subject_class: '',
-      condition: '',
-      pickup_address: '',
-      additional_notes: '',
-    });
-  };
-
-  if (isSubmitted) {
+  if (isSubmitSuccessful) {
     return (
       <div className="min-h-[80vh] flex flex-col items-center justify-center bg-gray-50 px-4">
         <div className="bg-white p-10 rounded-2xl shadow-xl text-center max-w-md w-full border border-gray-100">
@@ -94,7 +94,7 @@ const DonateBook: React.FC = () => {
           <p className="text-gray-600 mb-8">
             Thank you for your generous contribution. We will contact you soon to arrange the pickup details.
           </p>
-          <button onClick={resetForm} className="btn-primary w-full">
+          <button onClick={() => reset()} className="btn-primary w-full">
             Donate Another Book
           </button>
         </div>
@@ -151,13 +151,7 @@ const DonateBook: React.FC = () => {
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="p-6 md:p-10 space-y-8">
-            {error && (
-              <div className="rounded-md bg-red-50 p-4 border border-red-200">
-                <p className="text-sm font-medium text-red-800">{error}</p>
-              </div>
-            )}
-
+          <form onSubmit={handleSubmit(onSubmit)} className="p-6 md:p-10 space-y-8">
             {/* Donor Details */}
             <div>
               <h3 className="text-xl font-bold text-brand-dark mb-6 border-b border-gray-100 pb-2">
@@ -169,55 +163,48 @@ const DonateBook: React.FC = () => {
                     Full Name *
                   </label>
                   <input
-                    required
-                    name="full_name"
-                    value={formData.full_name}
-                    onChange={handleChange}
+                    {...register('full_name')}
                     type="text"
                     placeholder="e.g. Rajesh Kumar"
                     className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-brand-blue/20 outline-none transition-colors"
                   />
+                  {errors.full_name && <p className="mt-1 text-sm text-red-500">{errors.full_name.message}</p>}
                 </div>
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
                     Phone Number *
                   </label>
                   <input
-                    required
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
+                    {...register('phone')}
                     type="tel"
                     placeholder="+91 98765 43210"
                     className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-brand-blue/20 outline-none transition-colors"
                   />
+                  {errors.phone && <p className="mt-1 text-sm text-red-500">{errors.phone.message}</p>}
                 </div>
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
                     Email Address
                   </label>
                   <input
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
+                    {...register('email')}
                     type="email"
                     placeholder="e.g. rajesh@example.com"
                     className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-brand-blue/20 outline-none transition-colors"
                   />
+                  {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email.message}</p>}
                 </div>
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
                     Pickup Address *
                   </label>
                   <input
-                    required
-                    name="pickup_address"
-                    value={formData.pickup_address}
-                    onChange={handleChange}
+                    {...register('pickup_address')}
                     type="text"
                     placeholder="Provide full address for pickup"
                     className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-brand-blue/20 outline-none transition-colors"
                   />
+                  {errors.pickup_address && <p className="mt-1 text-sm text-red-500">{errors.pickup_address.message}</p>}
                 </div>
               </div>
             </div>
@@ -233,38 +220,31 @@ const DonateBook: React.FC = () => {
                     Which school books? *
                   </label>
                   <input
-                    required
-                    name="book_title"
-                    value={formData.book_title}
-                    onChange={handleChange}
+                    {...register('book_title')}
                     type="text"
                     placeholder="e.g. HC Verma Physics, Class 10 NCERT set"
                     className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-brand-blue/20 outline-none transition-colors"
                   />
+                  {errors.book_title && <p className="mt-1 text-sm text-red-500">{errors.book_title.message}</p>}
                 </div>
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
                     Class Level *
                   </label>
                   <input
-                    required
-                    name="subject_class"
-                    value={formData.subject_class}
-                    onChange={handleChange}
+                    {...register('subject_class')}
                     type="text"
                     placeholder="e.g. Physics Class 12, Competitive Exams"
                     className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-brand-blue/20 outline-none transition-colors"
                   />
+                  {errors.subject_class && <p className="mt-1 text-sm text-red-500">{errors.subject_class.message}</p>}
                 </div>
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
                     Book Condition *
                   </label>
                   <select
-                    required
-                    name="condition"
-                    value={formData.condition}
-                    onChange={handleChange}
+                    {...register('condition')}
                     className="w-full px-4 py-3 rounded-lg border border-gray-200 bg-white focus:ring-2 focus:ring-brand-blue/20 outline-none transition-colors"
                   >
                     <option value="">Select Condition</option>
@@ -272,6 +252,7 @@ const DonateBook: React.FC = () => {
                     <option value="Good">Good</option>
                     <option value="Fair">Fair (Readable)</option>
                   </select>
+                  {errors.condition && <p className="mt-1 text-sm text-red-500">{errors.condition.message}</p>}
                 </div>
               </div>
             </div>
@@ -282,9 +263,7 @@ const DonateBook: React.FC = () => {
                 Additional Notes
               </h3>
               <textarea
-                name="additional_notes"
-                value={formData.additional_notes}
-                onChange={handleChange}
+                {...register('additional_notes')}
                 rows={4}
                 placeholder="Any preferred pickup time, or details about the books..."
                 className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-brand-blue/20 outline-none transition-colors resize-none"
@@ -294,11 +273,11 @@ const DonateBook: React.FC = () => {
             {/* Submit */}
             <div className="pt-6">
               <button
-                disabled={loading}
+                disabled={isSubmitting}
                 type="submit"
                 className="w-full sm:w-auto btn-primary px-12 py-4 text-lg font-bold mx-auto flex items-center justify-center shadow-xl shadow-blue-500/20 transform hover:-translate-y-1 disabled:opacity-70 disabled:cursor-not-allowed"
               >
-                {loading ? 'Submitting...' : 'Submit Donation Request'}
+                {isSubmitting ? 'Submitting...' : 'Submit Donation Request'}
               </button>
             </div>
           </form>

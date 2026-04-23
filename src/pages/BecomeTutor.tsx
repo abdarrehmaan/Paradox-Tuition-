@@ -43,7 +43,7 @@ const BecomeTutor: React.FC = () => {
       // 1. Upload to Supabase Storage if a file was selected
       if (resumeFile) {
         const fileExt = resumeFile.name.split('.').pop();
-        const fileName = `${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
+        const fileName = `${Date.now()}_${crypto.randomUUID()}.${fileExt}`;
         const filePath = `${fileName}`;
 
         const { error: uploadError } = await supabase.storage

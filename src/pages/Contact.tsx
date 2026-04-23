@@ -1,41 +1,52 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Mail, Phone, Send, MessageCircle, CheckCircle } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { toast } from 'sonner';
+
+const contactSchema = z.object({
+  name: z.string().min(2, 'Name must be at least 2 characters'),
+  phone: z.string().length(10, 'Phone number must be exactly 10 digits').regex(/^\d+$/, 'Phone number must contain only numbers'),
+  email: z.string().email('Invalid email address').optional().or(z.literal('')),
+  subject: z.string().min(1, 'Please select a subject'),
+  message: z.string().min(10, 'Message must be at least 10 characters'),
+});
+
+type ContactFormValues = z.infer<typeof contactSchema>;
 
 const Contact: React.FC = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    email: '',
-    subject: '',
-    message: '',
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting, isSubmitSuccessful },
+  } = useForm<ContactFormValues>({
+    resolver: zodResolver(contactSchema),
+    defaultValues: {
+      name: '',
+      phone: '',
+      email: '',
+      subject: '',
+      message: '',
+    }
   });
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-  ) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
-
+  const onSubmit = async (data: ContactFormValues) => {
     try {
-      const { error: dbError } = await supabase.from('contact_messages').insert([formData]);
+      const { error: dbError } = await supabase.from('contact_messages').insert([data]);
       if (dbError) throw dbError;
       
-      setIsSubmitted(true);
-      setFormData({ name: '', phone: '', email: '', subject: '', message: '' });
+      toast.success('Message Sent Successfully!', {
+        description: "We'll get back to you as soon as possible.",
+      });
+      reset();
     } catch (err: any) {
       console.error('Error submitting contact form:', err);
-      setError(err.message || 'Something went wrong. Please try again.');
-    } finally {
-      setLoading(false);
+      toast.error('Failed to send message', {
+        description: err.message || 'Something went wrong. Please try again.',
+      });
     }
   };
 
@@ -83,7 +94,7 @@ const Contact: React.FC = () => {
           <div className="lg:col-span-2 bg-white rounded-2xl shadow-lg border border-gray-100 p-8 md:p-12">
             <h2 className="text-3xl font-bold text-brand-dark mb-8">Send Us a Message</h2>
 
-            {isSubmitted && (
+            {isSubmitSuccessful && (
               <div className="bg-green-50 border border-green-200 text-green-700 p-6 rounded-xl flex items-center gap-4 mb-8">
                 <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
                   <CheckCircle className="w-6 h-6" />
@@ -95,66 +106,45 @@ const Contact: React.FC = () => {
               </div>
             )}
 
-            {error && (
-              <div className="rounded-md bg-red-50 p-4 border border-red-200 mb-6">
-                <p className="text-sm font-medium text-red-800">{error}</p>
-              </div>
-            )}
-
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">Your Name *</label>
                   <input
-                    required
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
+                    {...register('name')}
                     type="text"
                     placeholder="John Doe"
                     className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-brand-blue/20 outline-none transition-colors"
                   />
+                  {errors.name && <p className="mt-1 text-sm text-red-500">{errors.name.message}</p>}
                 </div>
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">Phone Number *</label>
                   <input
-                    required
-                    name="phone"
-                    value={formData.phone}
-                    onChange={(e) => {
-                      e.target.value = e.target.value.replace(/\\D/g, '');
-                      handleChange(e);
-                    }}
+                    {...register('phone')}
                     type="tel"
-                    pattern="[0-9]{10}"
-                    minLength={10}
-                    maxLength={10}
-                    title="Please enter a valid 10-digit phone number"
                     placeholder="6388953289"
                     className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-brand-blue/20 outline-none transition-colors"
                   />
+                  {errors.phone && <p className="mt-1 text-sm text-red-500">{errors.phone.message}</p>}
                 </div>
               </div>
 
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
                 <input
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
+                  {...register('email')}
                   type="email"
                   placeholder="john@example.com"
                   className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-brand-blue/20 outline-none transition-colors"
                 />
+                {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email.message}</p>}
               </div>
 
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">Subject *</label>
                 <select
-                  required
-                  name="subject"
-                  value={formData.subject}
-                  onChange={handleChange}
+                  {...register('subject')}
                   className="w-full px-4 py-3 rounded-lg border border-gray-200 bg-white focus:ring-2 focus:ring-brand-blue/20 outline-none transition-colors"
                 >
                   <option value="">Select Topic</option>
@@ -163,28 +153,27 @@ const Contact: React.FC = () => {
                   <option value="General Support">General Support</option>
                   <option value="Business Inquiry">Business Inquiry</option>
                 </select>
+                {errors.subject && <p className="mt-1 text-sm text-red-500">{errors.subject.message}</p>}
               </div>
 
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">Message *</label>
                 <textarea
-                  required
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
+                  {...register('message')}
                   rows={5}
                   placeholder="How can we help you?"
                   className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-brand-blue/20 outline-none transition-colors resize-none"
                 />
+                {errors.message && <p className="mt-1 text-sm text-red-500">{errors.message.message}</p>}
               </div>
 
               <button
                 type="submit"
-                disabled={loading}
+                disabled={isSubmitting}
                 className="btn-primary w-full md:w-auto px-10 py-4 text-lg font-bold flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 <Send className="w-5 h-5" />
-                {loading ? 'Sending...' : 'Send Message'}
+                {isSubmitting ? 'Sending...' : 'Send Message'}
               </button>
             </form>
           </div>
@@ -216,5 +205,3 @@ const Contact: React.FC = () => {
 };
 
 export default Contact;
-
-
