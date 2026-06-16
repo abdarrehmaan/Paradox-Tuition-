@@ -1,80 +1,231 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { MapPin, BookOpen, UserCheck, ShieldCheck, GraduationCap, Star, ArrowRight } from 'lucide-react';
+import { 
+  MapPin, 
+  BookOpen, 
+  UserCheck, 
+  ShieldCheck, 
+  GraduationCap, 
+  Star, 
+  ArrowRight, 
+  ChevronLeft, 
+  ChevronRight,
+  Sparkles,
+  Award,
+  BookHeart,
+  Laptop
+} from 'lucide-react';
 import Button from '../components/ui/Button';
 import { Card, CardContent } from '../components/ui/Card';
 
-import Book3D from '../components/3d/Book3D';
-
 const Home: React.FC = () => {
   const navigate = useNavigate();
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [autoPlay, setAutoPlay] = useState(true);
+
+  const slides = [
+    {
+      tag: "EXPERT HOME TUTORS",
+      tagIcon: Sparkles,
+      tagColor: "from-brand-orange to-amber-500",
+      title: "Achieve Academic Excellence At Your Doorstep",
+      subtitle: "Verified tutors for Nursery to 12th, CBSE/ICSE, and all subjects. Get personalized 1-to-1 attention.",
+      ctaText1: "Book Free Demo Class",
+      ctaAction1: () => navigate('/find-tutor'),
+      ctaText2: "Find Tutors",
+      ctaAction2: () => navigate('/find-tutors'),
+      bgImage: "/banners/banner_tutor.png",
+    },
+    {
+      tag: "CRACK COMPETITIVE EXAMS",
+      tagIcon: Award,
+      tagColor: "from-brand-pink to-rose-500",
+      title: "Prepare For JEE & NEET With Elite Mentors",
+      subtitle: "Specialized classes led by MBBS doctors and IITian tutors to boost your ranks.",
+      ctaText1: "Book Free Demo Class",
+      ctaAction1: () => navigate('/find-tutor'),
+      ctaText2: "View Teachers",
+      ctaAction2: () => navigate('/find-tutors'),
+      bgImage: "/banners/banner_exam.png",
+    },
+    {
+      tag: "FEMALE TUTORS AVAILABLE",
+      tagIcon: UserCheck,
+      tagColor: "from-purple-500 to-indigo-600",
+      title: "Qualified Female Home Tutors On Request",
+      subtitle: "Providing dedicated and vetted female educators for a safe, comfortable, and focused learning environment.",
+      ctaText1: "Request Female Tutor",
+      ctaAction1: () => navigate('/find-tutor'),
+      ctaText2: "Contact Us",
+      ctaAction2: () => navigate('/contact'),
+      bgImage: "/banners/banner_female.png",
+    },
+    {
+      tag: "FLEXIBLE LEARNING FORMATS",
+      tagIcon: Laptop,
+      tagColor: "from-teal-500 to-emerald-600",
+      title: "Learn Online Or Offline At Your Convenience",
+      subtitle: "Choose between interactive 1-on-1 offline classes at home or highly engaging personal online tutoring sessions.",
+      ctaText1: "Book Free Demo Class",
+      ctaAction1: () => navigate('/find-tutor'),
+      ctaText2: "Contact Us",
+      ctaAction2: () => navigate('/contact'),
+      bgImage: "/banners/banner_online.png",
+    },
+    {
+      tag: "PARADOX INITIATIVE",
+      tagIcon: BookHeart,
+      tagColor: "from-blue-500 to-indigo-600",
+      title: "Empowering Every Student With Free Books",
+      subtitle: "Donate your old school textbooks or request books you need. Zero service fees, 100% community support.",
+      ctaText1: "Donate / Request Books",
+      ctaAction1: () => navigate('/donate-book'),
+      ctaText2: "Learn About Us",
+      ctaAction2: () => navigate('/about'),
+      bgImage: "/banners/banner_books.png",
+    },
+  ];
+
+  useEffect(() => {
+    if (!autoPlay) return;
+
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 6000);
+
+    return () => clearInterval(interval);
+  }, [autoPlay, slides.length]);
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  };
 
   return (
     <div className="flex flex-col min-h-screen bg-brand-gray">
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-blue-50/80 via-indigo-50/40 to-pink-50/60 overflow-hidden border-b border-brand-lightBlue/10">
-
+      {/* Hero Slider Section */}
+      <section className="relative w-full h-[75vh] min-h-[480px] sm:min-h-[560px] md:h-[70vh] lg:h-[75vh] overflow-hidden bg-brand-dark border-b border-brand-lightBlue/10">
         
-        {/* Colorful Abstract Backgrounds */}
-        <div className="absolute top-[-10%] right-[-5%] w-[600px] h-[600px] bg-brand-lightBlue/20 rounded-full mix-blend-multiply filter blur-[120px] opacity-70 pointer-events-none"></div>
-        <div className="absolute bottom-[-10%] left-[-5%] w-[500px] h-[500px] bg-brand-pink/20 rounded-full mix-blend-multiply filter blur-[100px] opacity-60 pointer-events-none"></div>
-        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.02] pointer-events-none"></div>
-        
-        <div className="container-custom relative z-10 pt-24 pb-32 lg:pt-32 lg:pb-40">
-          {/* Two column layout: text left, 3D book right */}
-          <div className="flex flex-col lg:flex-row items-center lg:items-start gap-12 lg:gap-4 xl:gap-8">
+        {/* Slides Container */}
+        <div className="relative w-full h-full">
+          {slides.map((slide, idx) => {
+            const isActive = currentSlide === idx;
+            const TagIcon = slide.tagIcon;
+            return (
+              <div
+                key={idx}
+                className={`absolute inset-0 w-full h-full transition-all duration-1000 ease-in-out ${
+                  isActive 
+                    ? 'opacity-100 z-20 pointer-events-auto' 
+                    : 'opacity-0 z-10 pointer-events-none'
+                }`}
+              >
+                {/* Background Image with Ken Burns Zoom Effect */}
+                <div className="absolute inset-0 w-full h-full overflow-hidden">
+                  <img
+                    src={slide.bgImage}
+                    alt={slide.title}
+                    className={`w-full h-full object-cover transition-transform duration-[10000ms] ease-out ${
+                      isActive ? 'scale-100' : 'scale-105'
+                    }`}
+                  />
+                  {/* Dark Premium Gradient Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/65 to-slate-900/40 z-10" />
+                </div>
 
-            {/* Left: text content */}
-            <div className="flex-1 text-center lg:text-left max-w-2xl mx-auto lg:mx-0">
-              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-amber-500 text-white font-bold px-5 py-2 rounded-full mb-8 shadow-md hover:shadow-lg transition-all animate-fade-in hover:-translate-y-0.5">
-                <span className="w-2 h-2 rounded-full bg-white animate-pulse"></span>
-                100% OFF On Registration Fees (Limited Time Offer)
+                {/* Content */}
+                <div className="container-custom h-full relative z-30 flex items-center pt-0">
+                  <div key={currentSlide} className="text-center lg:text-left max-w-3xl mx-auto lg:mx-0 w-full px-2 sm:px-0">
+                    
+                    {/* Tag Pill */}
+                    <div className={`inline-flex items-center gap-1.5 bg-gradient-to-r ${slide.tagColor} text-white font-bold px-4 py-1.5 sm:px-5 sm:py-2 rounded-full mb-4 sm:mb-6 shadow-md hover:shadow-lg transition-all animate-slide-up hover:-translate-y-0.5 text-xs sm:text-sm`}>
+                      <TagIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 animate-pulse" />
+                      <span>{slide.tag}</span>
+                    </div>
+
+                    {/* Main Title */}
+                    <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-[1.15] sm:leading-[1.1] mb-4 sm:mb-6 tracking-tight animate-slide-up">
+                      {slide.title}
+                    </h1>
+
+                    {/* Subtitle */}
+                    <p className="text-xs sm:text-sm md:text-base lg:text-lg text-slate-200 mb-6 sm:mb-8 font-medium leading-relaxed max-w-xl mx-auto lg:mx-0 animate-slide-up" style={{ animationDelay: '100ms' }}>
+                      {slide.subtitle}
+                    </p>
+
+                    {/* CTA Buttons */}
+                    <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-3 sm:gap-4 animate-slide-up w-full max-w-sm sm:max-w-none mx-auto lg:mx-0" style={{ animationDelay: '200ms' }}>
+                      <Button 
+                        onClick={slide.ctaAction1} 
+                        className="w-full sm:w-auto bg-gradient-to-r from-brand-orange to-amber-500 border-none shadow-orange-500/20 shadow-lg text-sm sm:text-base font-semibold py-2.5 sm:py-3.5 px-6 sm:px-8 text-white rounded-xl sm:rounded-2xl" 
+                        rightIcon={<ArrowRight className="w-4 h-4" />}
+                      >
+                        {slide.ctaText1}
+                      </Button>
+                      <Button 
+                        variant="secondary" 
+                        onClick={slide.ctaAction2} 
+                        className="w-full sm:w-auto text-sm sm:text-base font-semibold py-2.5 sm:py-3.5 px-6 sm:px-8 border-white/20 text-white bg-white/5 hover:bg-white/10 hover:border-white transition-colors rounded-xl sm:rounded-2xl"
+                      >
+                        {slide.ctaText2}
+                      </Button>
+                    </div>
+
+                  </div>
+                </div>
+
               </div>
-              <h1 className="text-5xl md:text-6xl lg:text-6xl font-extrabold text-brand-dark leading-[1.1] mb-6 tracking-tight animate-slide-up">
-                Achieve More With A{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-lightBlue via-blue-600 to-brand-pink relative inline-block">
-                  Dedicated Home Tutor
-                  <svg
-                    className="absolute w-full h-[10px] -bottom-1 left-0 text-brand-pink/40"
-                    viewBox="0 0 200 10"
-                    preserveAspectRatio="none"
-                  >
-                    <path d="M0 7 Q 50 0 100 7 Q 150 14 200 7" stroke="currentColor" strokeWidth="3" fill="transparent" strokeLinecap="round"/>
-                  </svg>
-                </span>
-              </h1>
-              <p className="text-lg md:text-xl text-slate-600 mb-10 font-medium leading-relaxed animate-slide-up" style={{ animationDelay: '100ms' }}>
-                Verified teachers from Nursery to 12th for all subjects and competitive exams. Excel in your studies with personalized 1-to-1 attention at your doorstep.
-              </p>
-              
-              <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4 mb-16 animate-slide-up" style={{ animationDelay: '200ms' }}>
-                <Button size="lg" onClick={() => navigate('/find-tutor')} className="bg-gradient-to-r from-brand-lightBlue to-blue-600 border-none shadow-blue-500/30 shadow-lg text-lg px-8" rightIcon={<ArrowRight className="w-5 h-5" />}>
-                  Book Free Demo Class
-                </Button>
-                <Button variant="secondary" size="lg" onClick={() => navigate('/become-tutor')} className="text-lg px-8 hover:border-brand-pink/30 hover:text-brand-pink transition-colors">
-                  Become a Tutor
-                </Button>
-              </div>
+            );
+          })}
+        </div>
 
-            </div>
+        {/* Carousel Navigation Pill (Dots + Arrows) */}
+        <div className="absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 md:left-auto md:right-10 md:translate-x-0 z-40 flex items-center gap-4 sm:gap-6 bg-slate-950/45 backdrop-blur-md px-4 py-2 sm:px-5 sm:py-2.5 rounded-full border border-white/10 shadow-lg">
+          {/* Dots */}
+          <div className="flex gap-2">
+            {slides.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => {
+                  setCurrentSlide(idx);
+                  setAutoPlay(false);
+                }}
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                  currentSlide === idx ? 'bg-brand-orange w-5' : 'bg-white/35 hover:bg-white/60'
+                }`}
+                aria-label={`Go to slide ${idx + 1}`}
+              />
+            ))}
+          </div>
 
-            {/* Right: 3D Book — vertically centred to the text block */}
-            <div
-              className="relative flex-shrink-0 flex items-center justify-center animate-fade-in self-center mt-8 lg:mt-0"
-              style={{ width: '360px', height: '440px', animationDelay: '400ms' }}
+          {/* Divider */}
+          <div className="w-px h-4 bg-white/20" />
+
+          {/* Arrows */}
+          <div className="flex gap-2.5">
+            <button
+              onClick={() => {
+                prevSlide();
+                setAutoPlay(false);
+              }}
+              className="w-7 h-7 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white/10 hover:border-white transition-colors"
+              aria-label="Previous slide"
             >
-              {/* Ambient glow behind book */}
-              <div style={{
-                position: 'absolute',
-                inset: 0,
-                background: 'radial-gradient(ellipse at center, rgba(99,102,241,0.20) 0%, rgba(244,63,94,0.10) 60%, transparent 100%)',
-                borderRadius: '50%',
-                filter: 'blur(28px)',
-                pointerEvents: 'none',
-              }} />
-              <Book3D />
-            </div>
-
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => {
+                nextSlide();
+                setAutoPlay(false);
+              }}
+              className="w-7 h-7 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white/10 hover:border-white transition-colors"
+              aria-label="Next slide"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
           </div>
         </div>
 

@@ -19,6 +19,7 @@ const AuthContext = createContext<AuthContextType>({
 });
 
 // 3. Export a custom hook to use the context easily
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => useContext(AuthContext);
 
 // 4. Create the provider component
