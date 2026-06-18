@@ -133,26 +133,26 @@ const Home: React.FC = () => {
                     }`}
                   />
                   {/* Dark Premium Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/65 to-slate-900/40 z-10" />
+                  <div className="absolute inset-0 bg-gradient-to-b from-slate-950/95 via-slate-950/80 to-slate-950/55 md:bg-gradient-to-r md:from-slate-950/90 md:via-slate-950/65 md:to-slate-900/40 z-10" />
                 </div>
 
                 {/* Content */}
-                <div className="container-custom h-full relative z-30 flex items-center pt-0">
+                <div className="container-custom h-full relative z-30 flex items-center pt-4 sm:pt-6 lg:pt-0">
                   <div key={currentSlide} className="text-center lg:text-left max-w-3xl mx-auto lg:mx-0 w-full px-2 sm:px-0">
                     
                     {/* Tag Pill */}
-                    <div className={`inline-flex items-center gap-1.5 bg-gradient-to-r ${slide.tagColor} text-white font-bold px-4 py-1.5 sm:px-5 sm:py-2 rounded-full mb-4 sm:mb-6 shadow-md hover:shadow-lg transition-all animate-slide-up hover:-translate-y-0.5 text-xs sm:text-sm`}>
+                    <div className={`inline-flex items-center gap-1.5 bg-gradient-to-r ${slide.tagColor} text-white font-bold px-4 py-1.5 sm:px-5 sm:py-2 rounded-full mb-3 sm:mb-6 shadow-md hover:shadow-lg transition-all animate-slide-up hover:-translate-y-0.5 text-xs sm:text-sm`}>
                       <TagIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 animate-pulse" />
                       <span>{slide.tag}</span>
                     </div>
 
                     {/* Main Title */}
-                    <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-[1.15] sm:leading-[1.1] mb-4 sm:mb-6 tracking-tight animate-slide-up">
+                    <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-[1.15] sm:leading-[1.1] mb-3 sm:mb-6 tracking-tight animate-slide-up">
                       {slide.title}
                     </h1>
 
                     {/* Subtitle */}
-                    <p className="text-xs sm:text-sm md:text-base lg:text-lg text-slate-200 mb-6 sm:mb-8 font-medium leading-relaxed max-w-xl mx-auto lg:mx-0 animate-slide-up" style={{ animationDelay: '100ms' }}>
+                    <p className="text-xs sm:text-sm md:text-base lg:text-lg text-slate-200 mb-5 sm:mb-8 font-medium leading-relaxed max-w-xl mx-auto lg:mx-0 animate-slide-up" style={{ animationDelay: '100ms' }}>
                       {slide.subtitle}
                     </p>
 

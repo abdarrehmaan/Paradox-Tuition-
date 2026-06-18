@@ -31,7 +31,7 @@ function App() {
     <div className="min-h-screen flex flex-col font-sans">
       <ScrollToTop />
       <Navbar />
-      <main className="flex-grow pt-[72px]"> {/* pt-[72px] to account for fixed navbar */}
+      <main className="flex-grow pt-[78px] sm:pt-[96px] md:pt-[110px]"> {/* Responsive padding-top to match responsive fixed navbar height */}
         <Suspense fallback={<PageLoader />}>
           <Routes>
             <Route path="/" element={<Home />} />

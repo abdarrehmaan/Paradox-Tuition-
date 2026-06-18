@@ -31,16 +31,16 @@ const Navbar: React.FC = () => {
   return (
     <nav
       className={`fixed w-full z-50 transition-all duration-300 ${isScrolled
-        ? 'bg-blue-50/95 backdrop-blur-md shadow-soft py-3 border-b border-brand-lightBlue/20'
-        : 'bg-blue-50/80 backdrop-blur-sm py-5 shadow-sm border-b border-blue-100'
+        ? 'bg-blue-50/95 backdrop-blur-md shadow-soft py-2 sm:py-3 border-b border-brand-lightBlue/20'
+        : 'bg-blue-50/80 backdrop-blur-sm py-3.5 sm:py-5 shadow-sm border-b border-blue-100'
         }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center rounded-2xl">
           {/* Logo */}
-          <div className="flex-shrink-0 flex items-center w-[268px] h-[82px]">
+          <div className="flex-shrink-0 flex items-center w-[160px] h-[50px] sm:w-[220px] sm:h-[68px] md:w-[268px] md:h-[82px] transition-all duration-300">
             <Link to="/" className="flex items-center justify-center w-full h-full p-0 m-0">
-              <img src="/logo.png" alt="Paradox Tuition Services Logo" className="w-full h-full object-cover" />
+              <img src="/logo.png" alt="Paradox Tuition Services Logo" className="w-full h-full object-contain" />
             </Link>
           </div>
 
