@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
-import { Shield, Lock, Search, RefreshCw, Settings, Clock } from 'lucide-react';
+import { Shield, Lock, Search, RefreshCw, Clock } from 'lucide-react';
 
 const AdminDashboard: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -13,21 +13,6 @@ const AdminDashboard: React.FC = () => {
   const [dbError, setDbError] = useState('');
 
   // Auto-logout state
-  const [showSettings, setShowSettings] = useState(false);
-  const [autoLogoutEnabled, setAutoLogoutEnabled] = useState<boolean>(() => {
-    return localStorage.getItem('admin_auto_logout_enabled') === 'true';
-  });
-  const [autoLogoutMode, setAutoLogoutMode] = useState<'inactivity' | 'specific_time'>(() => {
-    return (localStorage.getItem('admin_auto_logout_mode') as 'inactivity' | 'specific_time') || 'inactivity';
-  });
-  const [inactivityDuration, setInactivityDuration] = useState<number>(() => {
-    const val = localStorage.getItem('admin_inactivity_duration');
-    return val ? parseInt(val, 10) : 30; // Default 30 min
-  });
-  const [specificTime, setSpecificTime] = useState<string>(() => {
-    return localStorage.getItem('admin_specific_logout_time') || '18:00'; // Default 6:00 PM
-  });
-  const [timeLeft, setTimeLeft] = useState<number>(inactivityDuration * 60);
   const [logoutReason, setLogoutReason] = useState<string | null>(null);
 
   // Authentication Handler
@@ -60,102 +45,38 @@ const AdminDashboard: React.FC = () => {
     return () => subscription.unsubscribe();
   }, []);
 
-  // Persist settings to localStorage
+  // Inactivity Timer logic - Auto-logout after 30 minutes of inactivity
   useEffect(() => {
-    localStorage.setItem('admin_auto_logout_enabled', String(autoLogoutEnabled));
-  }, [autoLogoutEnabled]);
-
-  useEffect(() => {
-    localStorage.setItem('admin_auto_logout_mode', autoLogoutMode);
-  }, [autoLogoutMode]);
-
-  useEffect(() => {
-    localStorage.setItem('admin_inactivity_duration', String(inactivityDuration));
-    if (autoLogoutMode === 'inactivity') {
-      setTimeLeft(inactivityDuration * 60);
-    }
-  }, [inactivityDuration, autoLogoutMode]);
-
-  useEffect(() => {
-    localStorage.setItem('admin_specific_logout_time', specificTime);
-  }, [specificTime]);
-
-  // Inactivity Timer logic
-  useEffect(() => {
-    if (!isAuthenticated || !autoLogoutEnabled || autoLogoutMode !== 'inactivity') {
+    if (!isAuthenticated) {
       return;
     }
 
-    // Reset timer on user activity
+    let timeoutId: number;
+
     const resetTimer = () => {
-      setTimeLeft(inactivityDuration * 60);
+      window.clearTimeout(timeoutId);
+      timeoutId = window.setTimeout(() => {
+        localStorage.setItem('admin_logout_reason', 'inactivity');
+        handleSignOut();
+      }, 30 * 60 * 1000); // 30 minutes
     };
 
     const activityEvents = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart'];
-    const registerEvents = () => {
-      activityEvents.forEach((event) => {
-        window.addEventListener(event, resetTimer);
-      });
-    };
+    
+    activityEvents.forEach((event) => {
+      window.addEventListener(event, resetTimer);
+    });
 
-    const unregisterEvents = () => {
+    // Initialize timer
+    resetTimer();
+
+    return () => {
+      window.clearTimeout(timeoutId);
       activityEvents.forEach((event) => {
         window.removeEventListener(event, resetTimer);
       });
     };
-
-    registerEvents();
-
-    // Start timer interval
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev <= 1) {
-          clearInterval(timer);
-          // Trigger logout
-          localStorage.setItem('admin_logout_reason', 'inactivity');
-          handleSignOut();
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-
-    return () => {
-      clearInterval(timer);
-      unregisterEvents();
-    };
-  }, [isAuthenticated, autoLogoutEnabled, autoLogoutMode, inactivityDuration]);
-
-  // Specific Time logout logic
-  useEffect(() => {
-    if (!isAuthenticated || !autoLogoutEnabled || autoLogoutMode !== 'specific_time') {
-      return;
-    }
-
-    const checkTime = () => {
-      const now = new Date();
-      const currentHours = now.getHours().toString().padStart(2, '0');
-      const currentMinutes = now.getMinutes().toString().padStart(2, '0');
-      const currentTimeString = `${currentHours}:${currentMinutes}`;
-
-      if (currentTimeString === specificTime) {
-        localStorage.setItem('admin_logout_reason', 'scheduled');
-        handleSignOut();
-      }
-    };
-
-    // Check immediately and then every 10 seconds
-    checkTime();
-    const interval = setInterval(checkTime, 10000);
-
-    return () => clearInterval(interval);
-  }, [isAuthenticated, autoLogoutEnabled, autoLogoutMode, specificTime]);
-
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-  };
+  }, [isAuthenticated]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -305,17 +226,6 @@ const AdminDashboard: React.FC = () => {
           </div>
           <div className="mt-4 sm:mt-0 flex flex-wrap gap-3">
             <button
-              onClick={() => setShowSettings(!showSettings)}
-              className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium shadow-sm border transition-colors focus:outline-none focus:ring-2 focus:ring-brand-blue ${
-                showSettings
-                  ? 'bg-brand-blue/10 border-brand-blue/30 text-brand-blue hover:bg-brand-blue/20'
-                  : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
-              }`}
-            >
-              <Settings className="w-4 h-4" />
-              Auto-Logout Settings
-            </button>
-            <button
               onClick={fetchEnquiries}
               disabled={loading}
               className="inline-flex items-center gap-2 rounded-lg bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm border border-gray-200 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-blue"
@@ -332,106 +242,6 @@ const AdminDashboard: React.FC = () => {
             </button>
           </div>
         </div>
-
-        {/* Settings Panel */}
-        {showSettings && (
-          <div className="mb-8 bg-white p-6 rounded-2xl shadow-sm border border-gray-150 transition-all duration-300">
-            <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2 mb-4">
-              <Clock className="w-5 h-5 text-brand-blue" />
-              Configure Auto-Logout
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {/* Toggle Column */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Enable Auto-Logout</label>
-                <div className="flex items-center mt-2">
-                  <button
-                    type="button"
-                    onClick={() => setAutoLogoutEnabled(!autoLogoutEnabled)}
-                    className={`${
-                      autoLogoutEnabled ? 'bg-brand-blue' : 'bg-gray-200'
-                    } relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none`}
-                  >
-                    <span
-                      className={`${
-                        autoLogoutEnabled ? 'translate-x-5' : 'translate-x-0'
-                      } pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out`}
-                    />
-                  </button>
-                  <span className="ml-3 text-sm text-gray-600">
-                    {autoLogoutEnabled ? 'Active' : 'Disabled'}
-                  </span>
-                </div>
-              </div>
-
-              {/* Mode Column */}
-              {autoLogoutEnabled && (
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Logout Trigger</label>
-                  <select
-                    value={autoLogoutMode}
-                    onChange={(e) => setAutoLogoutMode(e.target.value as 'inactivity' | 'specific_time')}
-                    className="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-brand-blue focus:outline-none focus:ring-brand-blue bg-white"
-                  >
-                    <option value="inactivity">Inactivity Timeout (Idle)</option>
-                    <option value="specific_time">Specific Clock Time</option>
-                  </select>
-                </div>
-              )}
-
-              {/* Options Column */}
-              {autoLogoutEnabled && (
-                <div>
-                  {autoLogoutMode === 'inactivity' ? (
-                    <>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Inactivity Duration</label>
-                      <select
-                        value={inactivityDuration}
-                        onChange={(e) => setInactivityDuration(Number(e.target.value))}
-                        className="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-brand-blue focus:outline-none focus:ring-brand-blue bg-white"
-                      >
-                        <option value={1}>1 Minute (Testing)</option>
-                        <option value={5}>5 Minutes</option>
-                        <option value={15}>15 Minutes</option>
-                        <option value={30}>30 Minutes</option>
-                        <option value={60}>1 Hour</option>
-                      </select>
-                    </>
-                  ) : (
-                    <>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Logout Time</label>
-                      <input
-                        type="time"
-                        value={specificTime}
-                        onChange={(e) => setSpecificTime(e.target.value)}
-                        className="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-brand-blue focus:outline-none focus:ring-brand-blue"
-                      />
-                    </>
-                  )}
-                </div>
-              )}
-            </div>
-            
-            {/* Status / Countdown Indicator */}
-            {autoLogoutEnabled && (
-              <div className="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
-                <div className="flex items-center gap-1.5">
-                  <div className="w-2 h-2 rounded-full bg-green-500 animate-ping"></div>
-                  <span>
-                    {autoLogoutMode === 'inactivity'
-                      ? `Auto-logout after ${inactivityDuration}m of inactivity.`
-                      : `Auto-logout scheduled at ${specificTime} daily.`}
-                  </span>
-                </div>
-                {autoLogoutMode === 'inactivity' && (
-                  <div>
-                    Remaining time: <span className="font-semibold text-gray-700">{formatTime(timeLeft)}</span>
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-        )}
 
         {/* Data Container */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
