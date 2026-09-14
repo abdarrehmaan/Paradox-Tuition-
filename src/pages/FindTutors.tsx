@@ -1,192 +1,525 @@
-import React, { useState, useEffect } from 'react';
-import { Filter, Search } from 'lucide-react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { useSearchParams, useNavigate } from 'react-router-dom';
+import { 
+  Filter, 
+  Search, 
+  Sparkles, 
+  MapPin, 
+  X, 
+  ArrowRight,
+  SlidersHorizontal,
+  RotateCcw
+} from 'lucide-react';
 import TutorCard from '../components/tutors/TutorCard';
+import TutorCardSkeleton from '../components/tutors/TutorCardSkeleton';
 import type { Tutor } from '../components/tutors/TutorCard';
 import { supabase } from '../lib/supabase';
+import Button from '../components/ui/Button';
 
 const mockTutors: Tutor[] = [
   {
-    id: 'mock-1',
-    name: 'Rahul Sharma',
-    photoUrl: '', // Explicitly blank so pictures aren't used
-    experience: 5,
-    subjects: ['Mathematics', 'Physics'],
-    location: 'Prayagraj',
-    fees: '₹500',
-    mode: 'Online/Offline',
-    rating: 4.8
-  },
-  {
-    id: 'mock-2',
-    name: 'Priya Patel',
+    id: 'tutor-1',
+    name: 'Er. Alok Srivastava',
     photoUrl: '',
     experience: 8,
-    subjects: ['English', 'History'],
-    location: 'Prayagraj',
+    subjects: ['Mathematics', 'Physics'],
+    location: 'Varanasi',
     fees: '₹600',
-    mode: 'Online',
-    rating: 4.9
+    mode: 'Home & Online',
+    rating: 4.9,
+    qualification: 'M.Tech (NIT) • 8+ Yrs Ex-Faculty',
+    matchScore: 96,
   },
   {
-    id: 'mock-3',
-    name: 'Amit Kumar',
+    id: 'tutor-2',
+    name: 'Dr. Neha Verma',
     photoUrl: '',
-    experience: 3,
-    subjects: ['Science', 'Chemistry'],
+    experience: 6,
+    subjects: ['Physics', 'Science'],
     location: 'Prayagraj',
-    fees: '₹400',
-    mode: 'Offline',
-    rating: 4.6
+    fees: '₹700',
+    mode: 'Home Tuition',
+    rating: 5.0,
+    qualification: 'Ph.D Physics • Gold Medalist',
+    matchScore: 94,
   },
   {
-    id: 'mock-4',
-    name: 'Sneha Gupta',
+    id: 'tutor-3',
+    name: 'Dr. A. K. Mishra',
     photoUrl: '',
     experience: 10,
-    subjects: ['Accounts', 'Economics'],
-    location: 'Prayagraj',
+    subjects: ['Biology', 'Science'],
+    location: 'Lucknow',
     fees: '₹800',
-    mode: 'Online/Offline',
-    rating: 5.0
+    mode: 'Home & Online',
+    rating: 4.95,
+    qualification: 'MBBS • Elite NEET Mentor',
+    matchScore: 98,
+  },
+  {
+    id: 'tutor-4',
+    name: 'Priya Patel',
+    photoUrl: '',
+    experience: 7,
+    subjects: ['English', 'Social Science'],
+    location: 'Prayagraj',
+    fees: '₹500',
+    mode: 'Online',
+    rating: 4.85,
+    qualification: 'M.A. English Literature (DU)',
+    matchScore: 92,
+  },
+  {
+    id: 'tutor-5',
+    name: 'Sneha Gupta',
+    photoUrl: '',
+    experience: 9,
+    subjects: ['Accounts', 'Economics', 'Commerce'],
+    location: 'Prayagraj',
+    fees: '₹650',
+    mode: 'Home & Online',
+    rating: 4.9,
+    qualification: 'M.Com, CA Inter • Accounts Specialist',
+    matchScore: 95,
+  },
+  {
+    id: 'tutor-6',
+    name: 'Vikramaditya Roy',
+    photoUrl: '',
+    experience: 5,
+    subjects: ['Chemistry', 'Science'],
+    location: 'Kanpur',
+    fees: '₹550',
+    mode: 'Home Tuition',
+    rating: 4.8,
+    qualification: 'M.Sc Chemistry • JEE Specialist',
+    matchScore: 91,
+  },
+  {
+    id: 'tutor-7',
+    name: 'Er. Aman Tripathi',
+    photoUrl: '',
+    experience: 4,
+    subjects: ['Computer Science', 'Mathematics'],
+    location: 'Delhi NCR',
+    fees: '₹600',
+    mode: 'Online',
+    rating: 4.9,
+    qualification: 'B.Tech CSE • Coding & Logic Mentor',
+    matchScore: 93,
+  },
+  {
+    id: 'tutor-8',
+    name: 'Kavita Mehrotra',
+    photoUrl: '',
+    experience: 11,
+    subjects: ['All Subjects', 'Mathematics', 'Hindi'],
+    location: 'Prayagraj',
+    fees: '₹450',
+    mode: 'Home Tuition',
+    rating: 5.0,
+    qualification: 'Senior Primary Specialist • 11+ Yrs Exp',
+    matchScore: 97,
   }
 ];
 
 const FindTutors: React.FC = () => {
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+
   const [tutors, setTutors] = useState<Tutor[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+  // Filters state initialized from search params if provided
+  const [selectedSubject, setSelectedSubject] = useState(searchParams.get('subject') || 'All');
+  const [selectedLocation, setSelectedLocation] = useState(searchParams.get('location') || '');
+  const [selectedMode, setSelectedMode] = useState(searchParams.get('mode') || 'All');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [sortBy, setSortBy] = useState('match');
 
   useEffect(() => {
     const fetchTutors = async () => {
       try {
         setLoading(true);
-        // Supabase returns an array of objects that happen to match our Tutor interface
         const { data, error: dbError } = await supabase.from('tutors').select('*');
-        
         let fetchedData: Tutor[] = [];
-        if (!dbError && data) {
+        if (!dbError && data && data.length > 0) {
           fetchedData = data as Tutor[];
         }
-        
-        // Combine fetched data with mock data
-        setTutors([...fetchedData, ...mockTutors]);
+        setTutors([...mockTutors, ...fetchedData]);
       } catch (err: any) {
-        console.error("Error fetching tutors:", err);
-        setError("Could not connect to database, showing sample profiles.");
+        console.error('Error fetching tutors:', err);
         setTutors(mockTutors);
       } finally {
-        setLoading(false);
+        // Subtle delay to demonstrate smooth skeleton UX
+        setTimeout(() => setLoading(false), 400);
       }
     };
-    
+
     fetchTutors();
   }, []);
 
+  // Filter and sort logic
+  const filteredTutors = useMemo(() => {
+    return tutors.filter((tutor) => {
+      // Subject filter
+      if (selectedSubject && selectedSubject !== 'All') {
+        const matchesSubject = tutor.subjects.some(
+          (s) => s.toLowerCase().includes(selectedSubject.toLowerCase())
+        );
+        if (!matchesSubject) return false;
+      }
+
+      // Location filter
+      if (selectedLocation && selectedLocation.trim() !== '') {
+        const matchesLocation = tutor.location.toLowerCase().includes(selectedLocation.toLowerCase());
+        if (!matchesLocation) return false;
+      }
+
+      // Teaching mode filter
+      if (selectedMode && selectedMode !== 'All' && selectedMode !== 'Either') {
+        if (!tutor.mode.toLowerCase().includes(selectedMode.toLowerCase().replace(' tuition', '').replace(' classes', ''))) {
+          return false;
+        }
+      }
+
+      // Text query search
+      if (searchQuery.trim() !== '') {
+        const q = searchQuery.toLowerCase();
+        const matchesName = tutor.name.toLowerCase().includes(q);
+        const matchesSub = tutor.subjects.some((s) => s.toLowerCase().includes(q));
+        const matchesLoc = tutor.location.toLowerCase().includes(q);
+        if (!matchesName && !matchesSub && !matchesLoc) return false;
+      }
+
+      return true;
+    }).sort((a, b) => {
+      if (sortBy === 'match') {
+        return (b.matchScore || 90) - (a.matchScore || 90);
+      }
+      if (sortBy === 'rating') {
+        return b.rating - a.rating;
+      }
+      if (sortBy === 'experience') {
+        return b.experience - a.experience;
+      }
+      return 0;
+    });
+  }, [tutors, selectedSubject, selectedLocation, selectedMode, searchQuery, sortBy]);
+
+  const resetFilters = () => {
+    setSelectedSubject('All');
+    setSelectedLocation('');
+    setSelectedMode('All');
+    setSearchQuery('');
+    setSortBy('match');
+  };
+
   return (
-    <div className="bg-gray-50 min-h-screen py-8">
+    <div className="bg-brand-gray min-h-screen py-8 sm:py-12">
       <div className="container-custom">
-        {/* Page Header */}
-        <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        {/* Header section */}
+        <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-brand-dark tracking-tight">Find Your Perfect Tutor</h1>
-            <p className="text-gray-600 mt-1">Browse {loading ? '...' : tutors.length}+ verified home tutors across India</p>
-            {error && <p className="text-red-500 mt-2 text-sm">{error}</p>}
+            <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-brand-lightBlue bg-blue-50 px-3 py-1 rounded-full mb-2 border border-blue-100">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Smart Match Directory</span>
+            </div>
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight">
+              Verified Tutors & Mentors
+            </h1>
+            <p className="text-sm sm:text-base text-slate-600 mt-1">
+              Connect with vetted home & online tutors across India with 100% free demo classes.
+            </p>
           </div>
-          <button 
-            className="md:hidden flex items-center justify-center gap-2 btn-secondary px-4 py-2"
-            onClick={() => setIsFilterOpen(!isFilterOpen)}
-          >
-            <Filter className="w-5 h-5" /> Filters
-          </button>
+
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => setIsFilterOpen(true)}
+              className="lg:hidden flex items-center gap-2 btn-secondary px-4 py-2.5 text-sm font-semibold"
+            >
+              <Filter className="w-4 h-4 text-brand-lightBlue" />
+              <span>Filters</span>
+            </button>
+            <Button
+              variant="primary"
+              size="sm"
+              onClick={() => navigate('/find-tutor')}
+              className="py-2.5 px-5 shadow-soft"
+            >
+              Request Custom Match
+            </Button>
+          </div>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Filters Sidebar */}
-          <aside className={`lg:w-1/4 ${isFilterOpen ? 'block' : 'hidden lg:block'}`}>
-            <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 sticky top-24">
-              <div className="flex items-center gap-2 mb-6 pb-4 border-b border-gray-100">
-                <Filter className="w-5 h-5 text-brand-blue" />
-                <h2 className="font-bold text-lg text-brand-dark">Filters</h2>
+          {/* Desktop Filters Sidebar */}
+          <aside className="hidden lg:block lg:w-1/4 shrink-0">
+            <div className="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-soft sticky top-28 space-y-6">
+              <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+                <div className="flex items-center gap-2 font-bold text-slate-900">
+                  <SlidersHorizontal className="w-4 h-4 text-brand-lightBlue" />
+                  <span>Filter Directory</span>
+                </div>
+                {(selectedSubject !== 'All' || selectedLocation !== '' || selectedMode !== 'All' || searchQuery !== '') && (
+                  <button
+                    onClick={resetFilters}
+                    className="text-xs text-brand-lightBlue font-semibold hover:underline flex items-center gap-1"
+                  >
+                    <RotateCcw className="w-3 h-3" /> Reset
+                  </button>
+                )}
               </div>
 
-              {/* Class Filter */}
-              <div className="mb-6">
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Class</label>
-                <select className="w-full px-4 py-2.5 rounded-lg border border-gray-200 bg-gray-50 text-gray-700 focus:bg-white focus:ring-2 focus:ring-brand-blue/20 outline-none transition-colors">
-                  <option>All Classes</option>
-                  <option>Class 1 - 5</option>
-                  <option>Class 6 - 8</option>
-                  <option>Class 9 - 10</option>
-                  <option>Class 11 - 12</option>
-                </select>
-              </div>
-
-              {/* Subject Filter */}
-              <div className="mb-6">
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Subject</label>
-                <select className="w-full px-4 py-2.5 rounded-lg border border-gray-200 bg-gray-50 text-gray-700 focus:bg-white focus:ring-2 focus:ring-brand-blue/20 outline-none transition-colors">
-                  <option>Any Subject</option>
-                  <option>Mathematics</option>
-                  <option>Science</option>
-                  <option>English</option>
-                  <option>Physics</option>
-                  <option>Chemistry</option>
-                  <option>Accounts</option>
-                </select>
-              </div>
-
-              {/* Location */}
-              <div className="mb-6">
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Location</label>
+              {/* Keyword Search */}
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                  Search Tutor / Subject
+                </label>
                 <div className="relative">
-                  <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                  <input 
-                    type="text" 
-                    placeholder="Search city/area..." 
-                    className="w-full pl-9 pr-4 py-2.5 rounded-lg border border-gray-200 bg-gray-50 text-gray-700 focus:bg-white focus:ring-2 focus:ring-brand-blue/20 outline-none transition-colors"
+                  <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="e.g. Alok, Physics, Math..."
+                    className="w-full pl-9 pr-3 py-2 text-sm rounded-xl border border-slate-200 focus:ring-2 focus:ring-brand-lightBlue/20 focus:border-brand-lightBlue outline-none"
                   />
                 </div>
               </div>
 
-              {/* Teaching Mode */}
-              <div className="mb-6">
-                <label className="block text-sm font-semibold text-gray-700 mb-3">Teaching Mode</label>
-                <div className="space-y-2 text-sm text-gray-600">
-                  <label className="flex items-center gap-2 cursor-pointer hover:text-brand-blue transition-colors">
-                    <input type="checkbox" className="rounded text-brand-blue focus:ring-brand-blue/20" /> Home Tuition (Offline)
-                  </label>
-                  <label className="flex items-center gap-2 cursor-pointer hover:text-brand-blue transition-colors">
-                    <input type="checkbox" className="rounded text-brand-blue focus:ring-brand-blue/20" /> Online Learning
-                  </label>
+              {/* Subject Selector */}
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                  Subject
+                </label>
+                <select
+                  value={selectedSubject}
+                  onChange={(e) => setSelectedSubject(e.target.value)}
+                  className="w-full px-3 py-2.5 text-sm rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-brand-lightBlue/20 outline-none"
+                >
+                  <option value="All">All Subjects</option>
+                  <option value="Mathematics">Mathematics</option>
+                  <option value="Physics">Physics</option>
+                  <option value="Chemistry">Chemistry</option>
+                  <option value="Biology">Biology</option>
+                  <option value="English">English</option>
+                  <option value="Accounts">Accounts & Economics</option>
+                  <option value="Computer Science">Computer Science</option>
+                  <option value="Social Science">Social Science</option>
+                </select>
+              </div>
+
+              {/* Location Input */}
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                  City / Location
+                </label>
+                <div className="relative">
+                  <MapPin className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+                  <input
+                    type="text"
+                    value={selectedLocation}
+                    onChange={(e) => setSelectedLocation(e.target.value)}
+                    placeholder="Search city (e.g. Varanasi)"
+                    className="w-full pl-9 pr-3 py-2 text-sm rounded-xl border border-slate-200 focus:ring-2 focus:ring-brand-lightBlue/20 focus:border-brand-lightBlue outline-none"
+                  />
                 </div>
               </div>
 
-              <button className="w-full btn-primary py-2.5 text-sm mt-2">
-                Apply Filters
-              </button>
+              {/* Mode of Teaching */}
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                  Teaching Mode
+                </label>
+                <div className="space-y-2 text-xs font-medium text-slate-700">
+                  {['All', 'Home Tuition', 'Online'].map((mode) => (
+                    <label key={mode} className="flex items-center gap-2 cursor-pointer p-1.5 rounded-lg hover:bg-slate-50">
+                      <input
+                        type="radio"
+                        name="modeRadio"
+                        checked={selectedMode === mode}
+                        onChange={() => setSelectedMode(mode)}
+                        className="text-brand-lightBlue focus:ring-brand-lightBlue"
+                      />
+                      <span>{mode === 'All' ? 'All Modes (Offline & Online)' : mode}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* Sort By */}
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                  Sort By
+                </label>
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  className="w-full px-3 py-2 text-sm rounded-xl border border-slate-200 bg-slate-50 focus:bg-white outline-none"
+                >
+                  <option value="match">Highest Match Score</option>
+                  <option value="rating">Top Rated (Stars)</option>
+                  <option value="experience">Most Experienced</option>
+                </select>
+              </div>
             </div>
           </aside>
 
-          {/* Tutor Cards List */}
-          <div className="lg:w-3/4 flex flex-col gap-6">
-            {tutors.map(tutor => (
-              <TutorCard key={tutor.id} tutor={tutor} />
-            ))}
-
-            {/* Pagination Placeholder */}
-            <div className="mt-8 flex justify-center pb-8">
-              <nav className="inline-flex rounded-md shadow-sm">
-                <a href="#" className="py-2 px-4 rounded-l-md border border-gray-200 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">Previous</a>
-                <a href="#" className="py-2 px-4 border-t border-b border-gray-200 bg-brand-blue text-white text-sm font-medium">1</a>
-                <a href="#" className="py-2 px-4 border-t border-b border-gray-200 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">2</a>
-                <a href="#" className="py-2 px-4 border-t border-b border-gray-200 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">3</a>
-                <a href="#" className="py-2 px-4 rounded-r-md border border-gray-200 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">Next</a>
-              </nav>
+          {/* Tutor Cards List & Results */}
+          <div className="flex-1">
+            {/* Results bar */}
+            <div className="flex items-center justify-between mb-6 pb-2 border-b border-slate-200/60">
+              <span className="text-sm font-semibold text-slate-700">
+                Showing <strong className="text-brand-dark">{loading ? '...' : filteredTutors.length}</strong> verified tutors
+              </span>
+              <span className="text-xs text-slate-500 hidden sm:inline">
+                All tutors pass strict background & qualification verification
+              </span>
             </div>
+
+            {loading ? (
+              <div className="space-y-6">
+                <TutorCardSkeleton />
+                <TutorCardSkeleton />
+                <TutorCardSkeleton />
+              </div>
+            ) : filteredTutors.length > 0 ? (
+              <div className="space-y-6">
+                {filteredTutors.map((tutor) => (
+                  <TutorCard key={tutor.id} tutor={tutor} />
+                ))}
+              </div>
+            ) : (
+              /* Requirement 16: Empty State Fallback */
+              <div className="bg-white rounded-3xl border border-slate-200 p-8 sm:p-12 text-center shadow-soft max-w-xl mx-auto space-y-5 animate-fade-in">
+                <div className="w-16 h-16 rounded-full bg-blue-50 text-brand-lightBlue flex items-center justify-center mx-auto shadow-sm">
+                  <Search className="w-8 h-8" />
+                </div>
+                <div className="space-y-2">
+                  <h3 className="text-xl font-bold text-brand-dark">
+                    We couldn't find an exact match yet
+                  </h3>
+                  <p className="text-sm text-slate-600 leading-relaxed max-w-md mx-auto">
+                    Don't worry! We have a private network of 500+ verified tutors not publicly listed. Tell us your exact subject, class, and locality and our team will match you within 24 hours.
+                  </p>
+                </div>
+                <div className="pt-2 flex flex-col sm:flex-row justify-center gap-3">
+                  <button
+                    onClick={resetFilters}
+                    className="btn-secondary text-sm py-2.5 px-6"
+                  >
+                    Clear Filters
+                  </button>
+                  <Button
+                    variant="primary"
+                    className="text-sm py-2.5 px-6 shadow-soft"
+                    onClick={() => navigate('/find-tutor')}
+                    rightIcon={<ArrowRight className="w-4 h-4" />}
+                  >
+                    Request Tutor Assistance
+                  </Button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
+
+      {/* Mobile Filters Slide-over Drawer */}
+      {isFilterOpen && (
+        <div className="fixed inset-0 z-50 lg:hidden flex">
+          <div
+            className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"
+            onClick={() => setIsFilterOpen(false)}
+          />
+          <div className="relative ml-auto w-full max-w-xs bg-white h-full shadow-2xl p-6 overflow-y-auto flex flex-col justify-between z-10 animate-fade-in">
+            <div className="space-y-6">
+              <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+                <div className="flex items-center gap-2 font-bold text-slate-900 text-lg">
+                  <Filter className="w-5 h-5 text-brand-lightBlue" />
+                  <span>Filters</span>
+                </div>
+                <button
+                  onClick={() => setIsFilterOpen(false)}
+                  className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              {/* Subject */}
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                  Subject
+                </label>
+                <select
+                  value={selectedSubject}
+                  onChange={(e) => setSelectedSubject(e.target.value)}
+                  className="w-full px-3 py-2 text-sm rounded-xl border border-slate-200 bg-slate-50"
+                >
+                  <option value="All">All Subjects</option>
+                  <option value="Mathematics">Mathematics</option>
+                  <option value="Physics">Physics</option>
+                  <option value="Chemistry">Chemistry</option>
+                  <option value="Biology">Biology</option>
+                  <option value="English">English</option>
+                  <option value="Accounts">Accounts & Commerce</option>
+                  <option value="Computer Science">Computer Science</option>
+                </select>
+              </div>
+
+              {/* Location */}
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                  Location
+                </label>
+                <input
+                  type="text"
+                  value={selectedLocation}
+                  onChange={(e) => setSelectedLocation(e.target.value)}
+                  placeholder="e.g. Prayagraj"
+                  className="w-full px-3 py-2 text-sm rounded-xl border border-slate-200"
+                />
+              </div>
+
+              {/* Mode */}
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                  Mode
+                </label>
+                <select
+                  value={selectedMode}
+                  onChange={(e) => setSelectedMode(e.target.value)}
+                  className="w-full px-3 py-2 text-sm rounded-xl border border-slate-200 bg-slate-50"
+                >
+                  <option value="All">All Modes</option>
+                  <option value="Home Tuition">Home Tuition</option>
+                  <option value="Online">Online Learning</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="pt-6 border-t border-slate-100 flex gap-2">
+              <button
+                onClick={resetFilters}
+                className="flex-1 btn-secondary text-xs py-2.5"
+              >
+                Reset
+              </button>
+              <Button
+                variant="primary"
+                className="flex-1 text-xs py-2.5"
+                onClick={() => setIsFilterOpen(false)}
+              >
+                Apply
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

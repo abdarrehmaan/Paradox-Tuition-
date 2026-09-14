@@ -2,12 +2,13 @@ import { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
-import WhatsAppButton from './components/common/WhatsAppButton';
+import FloatingActionWidget from './components/common/FloatingActionWidget';
 import ScrollToTop from './components/common/ScrollToTop';
 
 // Lazy-loaded Pages
 const Home = lazy(() => import('./pages/Home'));
 const FindTutors = lazy(() => import('./pages/FindTutors'));
+const Courses = lazy(() => import('./pages/Courses'));
 const BecomeTutor = lazy(() => import('./pages/BecomeTutor'));
 const FindTutor = lazy(() => import('./pages/FindTutor'));
 const About = lazy(() => import('./pages/About'));
@@ -22,19 +23,20 @@ const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
 // A simple loading fallback
 const PageLoader = () => (
   <div className="flex justify-center items-center h-[60vh]">
-    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-blue"></div>
+    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-lightBlue"></div>
   </div>
 );
 
 function App() {
   return (
-    <div className="min-h-screen flex flex-col font-sans">
+    <div className="min-h-screen flex flex-col font-sans bg-brand-gray text-brand-dark">
       <ScrollToTop />
       <Navbar />
-      <main className="flex-grow pt-[78px] sm:pt-[96px] md:pt-[110px]"> {/* Responsive padding-top to match responsive fixed navbar height */}
+      <main className="flex-grow pt-[64px] sm:pt-[74px]">
         <Suspense fallback={<PageLoader />}>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/courses" element={<Courses />} />
             <Route path="/find-tutors" element={<FindTutors />} />
             <Route path="/become-tutor" element={<BecomeTutor />} />
             <Route path="/find-tutor" element={<FindTutor />} />
@@ -51,7 +53,7 @@ function App() {
         </Suspense>
       </main>
       <Footer />
-      <WhatsAppButton />
+      <FloatingActionWidget />
     </div>
   );
 }

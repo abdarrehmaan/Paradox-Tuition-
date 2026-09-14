@@ -1,399 +1,709 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import { 
-  MapPin, 
-  BookOpen, 
-  UserCheck, 
-  ShieldCheck, 
-  GraduationCap, 
-  Star, 
+  Sparkles, 
   ArrowRight, 
-  ChevronLeft, 
-  ChevronRight,
-  Sparkles,
-  Award,
-  BookHeart,
-  Laptop
+  CheckCircle2, 
+  UserCheck,
+  ShieldCheck, 
+  Home as HomeIcon, 
+  BookOpen, 
+  Clock, 
+  Star, 
+  GraduationCap, 
+  ChevronRight, 
+  Search,
+  Compass,
+  Zap
 } from 'lucide-react';
 import Button from '../components/ui/Button';
-import { Card, CardContent } from '../components/ui/Card';
+import TutorMatchingSimulator from '../components/hero/TutorMatchingSimulator';
+import InteractiveTutorSearch from '../components/search/InteractiveTutorSearch';
+import AnimatedCounter from '../components/common/AnimatedCounter';
+
+const SUBJECT_LIST = [
+  {
+    name: 'Mathematics',
+    desc: 'Classes 1–12 • CBSE, ICSE, JEE Foundation',
+    icon: '📐',
+    tutorCount: '120+ Tutors',
+    color: 'from-blue-500/10 to-indigo-500/10',
+    borderColor: 'hover:border-blue-500/40',
+  },
+  {
+    name: 'Physics',
+    desc: 'Classes 9–12 • Mechanics, Optics & Electrodynamics',
+    icon: '⚡',
+    tutorCount: '85+ Tutors',
+    color: 'from-amber-500/10 to-orange-500/10',
+    borderColor: 'hover:border-amber-500/40',
+  },
+  {
+    name: 'Chemistry',
+    desc: 'Organic, Inorganic & Physical Chemistry for Boards & NEET',
+    icon: '🧪',
+    tutorCount: '75+ Tutors',
+    color: 'from-cyan-500/10 to-teal-500/10',
+    borderColor: 'hover:border-cyan-500/40',
+  },
+  {
+    name: 'Biology',
+    desc: 'Botany, Zoology & Targeted NEET Medical Prep',
+    icon: '🧬',
+    tutorCount: '90+ Tutors',
+    color: 'from-emerald-500/10 to-green-500/10',
+    borderColor: 'hover:border-emerald-500/40',
+  },
+  {
+    name: 'English',
+    desc: 'Grammar, Literature, Creative Writing & Spoken English',
+    icon: '📖',
+    tutorCount: '65+ Tutors',
+    color: 'from-purple-500/10 to-pink-500/10',
+    borderColor: 'hover:border-purple-500/40',
+  },
+  {
+    name: 'Computer Science',
+    desc: 'Python, C++, Java, IP & School Coding Curricula',
+    icon: '💻',
+    tutorCount: '50+ Tutors',
+    color: 'from-indigo-500/10 to-blue-500/10',
+    borderColor: 'hover:border-indigo-500/40',
+  },
+  {
+    name: 'Social Science',
+    desc: 'History, Civics, Geography & Economics for High School',
+    icon: '🌍',
+    tutorCount: '45+ Tutors',
+    color: 'from-rose-500/10 to-red-500/10',
+    borderColor: 'hover:border-rose-500/40',
+  },
+  {
+    name: 'Hindi',
+    desc: 'Vyakaran, Sahitya, K-12 Boards & Literature',
+    icon: '✍️',
+    tutorCount: '40+ Tutors',
+    color: 'from-orange-500/10 to-amber-500/10',
+    borderColor: 'hover:border-orange-500/40',
+  },
+];
+
+const TESTIMONIALS = [
+  {
+    id: 1,
+    name: 'Dr. Sunita Kapoor',
+    role: 'Parent • Varanasi',
+    avatar: 'S',
+    avatarBg: 'bg-emerald-100 text-emerald-700',
+    rating: 5,
+    title: 'Found the ideal Math mentor in 24 hours',
+    content: 'Finding a reliable home tutor for Class 10 board exams was overwhelming. Paradox matched us with an experienced NIT alumnus who simplified trigonometry so well that my daughter scored 96%!',
+    subject: 'Class 10 Mathematics',
+    verified: true,
+  },
+  {
+    id: 2,
+    name: 'Rohan Deshmukh',
+    role: 'Student • Prayagraj',
+    avatar: 'R',
+    avatarBg: 'bg-blue-100 text-blue-700',
+    rating: 5,
+    title: 'Cracked NEET Biology concepts seamlessly',
+    content: 'The 1-on-1 personalized attention is incomparable to giant coaching factories. My mentor tailored every doubt session to my weak topics. The free demo class gave me total confidence.',
+    subject: 'NEET Medical Prep',
+    verified: true,
+  },
+  {
+    id: 3,
+    name: 'Mahesh Narang',
+    role: 'Parent • Lucknow',
+    avatar: 'M',
+    avatarBg: 'bg-amber-100 text-amber-700',
+    rating: 5,
+    title: 'Completely professional and trustworthy',
+    content: 'We specifically requested a female teacher for our 8th-grade daughter. Paradox verified credentials and arranged an offline home tutor within two days. Exceptional transparency and care.',
+    subject: 'Class 8 All Subjects',
+    verified: true,
+  },
+];
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [autoPlay, setAutoPlay] = useState(true);
 
-  const slides = [
-    {
-      tag: "EXPERT HOME TUTORS",
-      tagIcon: Sparkles,
-      tagColor: "from-brand-orange to-amber-500",
-      title: "Achieve Academic Excellence At Your Doorstep",
-      subtitle: "Verified tutors for Nursery to 12th, CBSE/ICSE, and all subjects. Get personalized 1-to-1 attention.",
-      ctaText1: "Book Free Demo Class",
-      ctaAction1: () => navigate('/find-tutor'),
-      ctaText2: "Find Tutors",
-      ctaAction2: () => navigate('/find-tutors'),
-      bgImage: "/banners/banner_tutor.png",
-    },
-    {
-      tag: "CRACK COMPETITIVE EXAMS",
-      tagIcon: Award,
-      tagColor: "from-brand-pink to-rose-500",
-      title: "Prepare For JEE & NEET With Elite Mentors",
-      subtitle: "Specialized classes led by MBBS doctors and IITian tutors to boost your ranks.",
-      ctaText1: "Book Free Demo Class",
-      ctaAction1: () => navigate('/find-tutor'),
-      ctaText2: "View Teachers",
-      ctaAction2: () => navigate('/find-tutors'),
-      bgImage: "/banners/banner_exam.png",
-    },
-    {
-      tag: "FEMALE TUTORS AVAILABLE",
-      tagIcon: UserCheck,
-      tagColor: "from-purple-500 to-indigo-600",
-      title: "Qualified Female Home Tutors On Request",
-      subtitle: "Providing dedicated and vetted female educators for a safe, comfortable, and focused learning environment.",
-      ctaText1: "Request Female Tutor",
-      ctaAction1: () => navigate('/find-tutor'),
-      ctaText2: "Contact Us",
-      ctaAction2: () => navigate('/contact'),
-      bgImage: "/banners/banner_female.png",
-    },
-    {
-      tag: "FLEXIBLE LEARNING FORMATS",
-      tagIcon: Laptop,
-      tagColor: "from-teal-500 to-emerald-600",
-      title: "Learn Online Or Offline At Your Convenience",
-      subtitle: "Choose between interactive 1-on-1 offline classes at home or highly engaging personal online tutoring sessions.",
-      ctaText1: "Book Free Demo Class",
-      ctaAction1: () => navigate('/find-tutor'),
-      ctaText2: "Contact Us",
-      ctaAction2: () => navigate('/contact'),
-      bgImage: "/banners/banner_online.png",
-    },
-    {
-      tag: "PARADOX INITIATIVE",
-      tagIcon: BookHeart,
-      tagColor: "from-blue-500 to-indigo-600",
-      title: "Empowering Every Student With Free Books",
-      subtitle: "Donate your old school textbooks or request books you need. Zero service fees, 100% community support.",
-      ctaText1: "Donate / Request Books",
-      ctaAction1: () => navigate('/donate-book'),
-      ctaText2: "Learn About Us",
-      ctaAction2: () => navigate('/about'),
-      bgImage: "/banners/banner_books.png",
-    },
-  ];
-
-  useEffect(() => {
-    if (!autoPlay) return;
-
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 6000);
-
-    return () => clearInterval(interval);
-  }, [autoPlay, slides.length]);
-
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % slides.length);
-  };
-
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  const scrollToSearch = () => {
+    const el = document.getElementById('search-section');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      navigate('/find-tutors');
+    }
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-brand-gray">
-      {/* Hero Slider Section */}
-      <section className="relative w-full h-[75vh] min-h-[480px] sm:min-h-[560px] md:h-[70vh] lg:h-[75vh] overflow-hidden bg-brand-dark border-b border-brand-lightBlue/10">
-        
-        {/* Slides Container */}
-        <div className="relative w-full h-full">
-          {slides.map((slide, idx) => {
-            const isActive = currentSlide === idx;
-            const TagIcon = slide.tagIcon;
-            return (
-              <div
-                key={idx}
-                className={`absolute inset-0 w-full h-full transition-all duration-1000 ease-in-out ${
-                  isActive 
-                    ? 'opacity-100 z-20 pointer-events-auto' 
-                    : 'opacity-0 z-10 pointer-events-none'
-                }`}
-              >
-                {/* Background Image with Ken Burns Zoom Effect */}
-                <div className="absolute inset-0 w-full h-full overflow-hidden">
-                  <img
-                    src={slide.bgImage}
-                    alt={slide.title}
-                    className={`w-full h-full object-cover transition-transform duration-[10000ms] ease-out ${
-                      isActive ? 'scale-100' : 'scale-105'
-                    }`}
-                  />
-                  {/* Dark Premium Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-b from-slate-950/95 via-slate-950/80 to-slate-950/55 md:bg-gradient-to-r md:from-slate-950/90 md:via-slate-950/65 md:to-slate-900/40 z-10" />
-                </div>
+    <div className="flex flex-col min-h-screen bg-brand-gray overflow-x-hidden">
+      {/* ========================================================================= */}
+      {/* 1. HERO SECTION (REQUIREMENT 2) */}
+      {/* ========================================================================= */}
+      <section className="relative pt-12 pb-20 md:pt-20 md:pb-28 overflow-hidden bg-gradient-to-b from-blue-50/60 via-brand-gray to-brand-gray">
+        {/* Ambient subtle glow backdrops */}
+        <div className="absolute top-10 left-1/4 w-96 h-96 bg-brand-lightBlue/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-40 right-10 w-96 h-96 bg-brand-orange/10 rounded-full blur-3xl pointer-events-none" />
 
-                {/* Content */}
-                <div className="container-custom h-full relative z-30 flex items-center pt-4 sm:pt-6 lg:pt-0">
-                  <div key={currentSlide} className="text-center lg:text-left max-w-3xl mx-auto lg:mx-0 w-full px-2 sm:px-0">
-                    
-                    {/* Tag Pill */}
-                    <div className={`inline-flex items-center gap-1.5 bg-gradient-to-r ${slide.tagColor} text-white font-bold px-4 py-1.5 sm:px-5 sm:py-2 rounded-full mb-3 sm:mb-6 shadow-md hover:shadow-lg transition-all animate-slide-up hover:-translate-y-0.5 text-xs sm:text-sm`}>
-                      <TagIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 animate-pulse" />
-                      <span>{slide.tag}</span>
-                    </div>
-
-                    {/* Main Title */}
-                    <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-[1.15] sm:leading-[1.1] mb-3 sm:mb-6 tracking-tight animate-slide-up">
-                      {slide.title}
-                    </h1>
-
-                    {/* Subtitle */}
-                    <p className="text-xs sm:text-sm md:text-base lg:text-lg text-slate-200 mb-5 sm:mb-8 font-medium leading-relaxed max-w-xl mx-auto lg:mx-0 animate-slide-up" style={{ animationDelay: '100ms' }}>
-                      {slide.subtitle}
-                    </p>
-
-                    {/* CTA Buttons */}
-                    <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-3 sm:gap-4 animate-slide-up w-full max-w-sm sm:max-w-none mx-auto lg:mx-0" style={{ animationDelay: '200ms' }}>
-                      <Button 
-                        onClick={slide.ctaAction1} 
-                        className="w-full sm:w-auto bg-gradient-to-r from-brand-orange to-amber-500 border-none shadow-orange-500/20 shadow-lg text-sm sm:text-base font-semibold py-2.5 sm:py-3.5 px-6 sm:px-8 text-white rounded-xl sm:rounded-2xl" 
-                        rightIcon={<ArrowRight className="w-4 h-4" />}
-                      >
-                        {slide.ctaText1}
-                      </Button>
-                      <Button 
-                        variant="secondary" 
-                        onClick={slide.ctaAction2} 
-                        className="w-full sm:w-auto text-sm sm:text-base font-semibold py-2.5 sm:py-3.5 px-6 sm:px-8 border-white/20 text-white bg-white/5 hover:bg-white/10 hover:border-white transition-colors rounded-xl sm:rounded-2xl"
-                      >
-                        {slide.ctaText2}
-                      </Button>
-                    </div>
-
-                  </div>
-                </div>
-
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Carousel Navigation Pill (Dots + Arrows) */}
-        <div className="absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 md:left-auto md:right-10 md:translate-x-0 z-40 flex items-center gap-4 sm:gap-6 bg-slate-950/45 backdrop-blur-md px-4 py-2 sm:px-5 sm:py-2.5 rounded-full border border-white/10 shadow-lg">
-          {/* Dots */}
-          <div className="flex gap-2">
-            {slides.map((_, idx) => (
-              <button
-                key={idx}
-                onClick={() => {
-                  setCurrentSlide(idx);
-                  setAutoPlay(false);
-                }}
-                className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                  currentSlide === idx ? 'bg-brand-orange w-5' : 'bg-white/35 hover:bg-white/60'
-                }`}
-                aria-label={`Go to slide ${idx + 1}`}
-              />
-            ))}
-          </div>
-
-          {/* Divider */}
-          <div className="w-px h-4 bg-white/20" />
-
-          {/* Arrows */}
-          <div className="flex gap-2.5">
-            <button
-              onClick={() => {
-                prevSlide();
-                setAutoPlay(false);
-              }}
-              className="w-7 h-7 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white/10 hover:border-white transition-colors"
-              aria-label="Previous slide"
-            >
-              <ChevronLeft className="w-4 h-4" />
-            </button>
-            <button
-              onClick={() => {
-                nextSlide();
-                setAutoPlay(false);
-              }}
-              className="w-7 h-7 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white/10 hover:border-white transition-colors"
-              aria-label="Next slide"
-            >
-              <ChevronRight className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-
-      </section>
-
-
-
-      {/* Features Section */}
-      <section className="section-padding bg-gradient-to-b from-brand-gray to-blue-50/30 relative">
-        <div className="absolute right-0 top-0 w-1/3 h-full bg-gradient-to-l from-brand-lightBlue/5 to-transparent pointer-events-none"></div>
         <div className="container-custom relative z-10">
-          <div className="text-center mb-16 max-w-2xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-brand-dark mb-4 tracking-tight">
-              Why Choose <span className="text-brand-lightBlue">Paradox?</span>
-            </h2>
-            <p className="text-slate-600 text-lg">We provide the highest quality educational support to help students reach their full academic potential safely and efficiently.</p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { icon: MapPin, color: 'text-brand-lightBlue', bg: 'bg-blue-50', border: 'group-hover:border-brand-lightBlue', title: "Expert Local Tutors", desc: "We provide highly vetted, expert tutors across Prayagraj, Lucknow, and Kanpur." },
-              { icon: BookOpen, color: 'text-brand-pink', bg: 'bg-pink-50', border: 'group-hover:border-brand-pink', title: "Flexible Learning", desc: "Online and Offline classes available with absolutely ZERO registration fees." },
-              { icon: UserCheck, color: 'text-brand-orange', bg: 'bg-orange-50', border: 'group-hover:border-brand-orange', title: "Female Tutors", desc: "Dedicated and qualified female tutors are available upon request for your peace of mind." },
-              { icon: ShieldCheck, color: 'text-blue-600', bg: 'bg-blue-100', border: 'group-hover:border-blue-600', title: "Specialized Guidance", desc: "Expert MBBS/IITian tutors exclusively available for NEET & JEE aspirants." },
-            ].map((feature, idx) => (
-              <Card key={idx} hoverable className={`group border-transparent transition-all duration-300 ${feature.border} hover:shadow-lg`}>
-                <CardContent className="p-8 relative overflow-hidden">
-                  <div className={`absolute -right-6 -top-6 w-24 h-24 rounded-full opacity-20 transition-transform duration-500 group-hover:scale-150 ${feature.bg}`}></div>
-                  <div className={`relative z-10 w-14 h-14 ${feature.bg} rounded-2xl flex items-center justify-center mb-6 shadow-sm transition-transform group-hover:-translate-y-1`}>
-                    <feature.icon className={`h-7 w-7 ${feature.color}`} />
-                  </div>
-                  <h3 className="text-xl font-bold mb-3 text-brand-dark relative z-10">{feature.title}</h3>
-                  <p className="text-slate-600 text-sm leading-relaxed relative z-10">{feature.desc}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* How it Works Section */}
-      <section className="section-padding bg-gradient-to-b from-blue-50/30 to-white relative">
-        <div className="absolute left-0 right-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-lightBlue/20 to-transparent"></div>
-        <div className="container-custom">
-          <div className="text-center mb-20">
-            <h2 className="text-3xl md:text-4xl font-bold text-brand-dark mb-4 tracking-tight">How It Works</h2>
-            <p className="text-slate-600 text-lg max-w-2xl mx-auto">Getting started with Paradox Tuition Services is simple, fast, and completely secure.</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 relative max-w-5xl mx-auto">
-            {/* Connecting Line */}
-            <div className="hidden md:block absolute top-10 left-[16%] right-[16%] h-1 bg-gradient-to-r from-brand-lightBlue/20 via-brand-pink/20 to-brand-orange/20 rounded-full"></div>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
             
-            {[
-              { step: "1", color: "from-brand-lightBlue to-blue-500", title: "Search for Tutors", desc: "Use our smart search to find tutors based on subject, class, and your location." },
-              { step: "2", color: "from-brand-pink to-rose-400", title: "Book a Demo", desc: "Connect with the tutor and schedule a free demo class at your convenience." },
-              { step: "3", color: "from-brand-orange to-amber-500", title: "Start Learning", desc: "If satisfied, finalize the schedule and start achieving academic excellence." }
-            ].map((item, idx) => (
-              <div key={idx} className="relative flex flex-col items-center text-center group">
-                <div className="w-20 h-20 bg-white border border-gray-100 rounded-full flex items-center justify-center mb-8 shadow-md z-10 hover:shadow-xl transition-all duration-300 relative overflow-hidden group-hover:-translate-y-2 group-hover:shadow-brand-lightBlue/20">
-                  <div className={`absolute inset-0 bg-gradient-to-br opacity-10 ${item.color} transition-opacity duration-300 group-hover:opacity-20`}></div>
-                  <span className={`text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-br ${item.color} relative z-10 drop-shadow-sm transition-all duration-500 group-hover:scale-150 group-hover:rotate-12`}>{item.step}</span>
-                </div>
-                <h3 className="text-xl font-bold mb-3 text-brand-dark">{item.title}</h3>
-                <p className="text-slate-600 text-sm px-4 leading-relaxed">{item.desc}</p>
+            {/* Left Column: Headline & Value Prop */}
+            <div className="lg:col-span-7 text-center lg:text-left space-y-6">
+              {/* Badge */}
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-slate-200 shadow-soft text-slate-800 text-xs sm:text-sm font-semibold animate-fade-in">
+                <span className="flex h-2 w-2 relative">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                </span>
+                <span>Next-Generation Intelligent Tutor Matching</span>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* Popular Subjects & Cities Section */}
-      <section className="section-padding bg-gradient-to-br from-orange-50/40 via-brand-gray to-pink-50/30 relative overflow-hidden">
-         <div className="absolute left-[-10%] bottom-[-20%] w-[500px] h-[500px] bg-brand-lightBlue/10 rounded-full blur-[100px] pointer-events-none"></div>
-        <div className="container-custom relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
-            {/* Subjects */}
-            <div className="bg-white p-8 rounded-3xl shadow-soft border border-gray-100/50">
-              <div className="flex items-center gap-4 mb-8">
-                <div className="p-3 bg-brand-orange/10 rounded-xl">
-                  <GraduationCap className="h-7 w-7 text-brand-orange" />
-                </div>
-                <h2 className="text-2xl md:text-3xl font-bold text-brand-dark tracking-tight">Popular Subjects</h2>
+              {/* Main Headline */}
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-brand-dark tracking-tight leading-[1.15] text-balance">
+                Find the Right Tutor.{' '}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-lightBlue via-blue-600 to-indigo-600">
+                  Learn Without Limits.
+                </span>
+              </h1>
+
+              {/* Supporting Value Proposition */}
+              <p className="text-base sm:text-lg text-slate-600 max-w-xl mx-auto lg:mx-0 font-medium leading-relaxed">
+                Connect with thoroughly verified educators for personalized 1-on-1 home tuition and online classes. Handpicked matching tailored to your curriculum, pace, and goals.
+              </p>
+
+              {/* Primary and Secondary CTAs */}
+              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5 pt-2">
+                <Button
+                  size="lg"
+                  onClick={scrollToSearch}
+                  className="w-full sm:w-auto bg-brand-lightBlue hover:bg-blue-600 text-white font-bold shadow-soft hover:shadow-glow-blue rounded-2xl px-8 py-4 text-base transition-all"
+                  rightIcon={<ArrowRight className="w-5 h-5" />}
+                >
+                  Find a Tutor
+                </Button>
+
+                <Button
+                  variant="secondary"
+                  size="lg"
+                  onClick={() => navigate('/become-tutor')}
+                  className="w-full sm:w-auto rounded-2xl px-8 py-4 text-base font-semibold border-slate-200 hover:bg-white text-slate-800"
+                >
+                  Become a Tutor
+                </Button>
               </div>
-              <div className="flex flex-wrap gap-2.5">
-                {['All Subjects+Doubts', 'Mathematics', 'Science', 'English', 'Physics', 'Chemistry', 'Biology', 'NEET', 'JEE', 'ICSE', 'CBSE'].map((sub, idx) => (
-                  <Link key={idx} to={`/find-tutors?subject=${sub}`} className="bg-gray-50 px-4 py-2 rounded-xl border border-gray-100 text-sm text-slate-700 font-medium hover:border-brand-orange hover:bg-brand-orange/5 hover:text-brand-orange transition-all duration-200">
-                    {sub}
-                  </Link>
-                ))}
+
+              {/* Trust Row */}
+              <div className="pt-6 border-t border-slate-200/80 flex flex-wrap items-center justify-center lg:justify-start gap-y-2 gap-x-6 text-xs sm:text-sm font-semibold text-slate-700">
+                <div className="flex items-center gap-1.5">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                  <span>Personalized Matching</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                  <span>Qualified Tutors</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                  <span>Home & Online Classes</span>
+                </div>
               </div>
             </div>
 
-            {/* Cities */}
-            <div className="bg-white p-8 rounded-3xl shadow-soft border border-gray-100/50">
-              <div className="flex items-center gap-4 mb-8">
-                <div className="p-3 bg-brand-pink/10 rounded-xl">
-                  <MapPin className="h-7 w-7 text-brand-pink" />
-                </div>
-                <h2 className="text-2xl md:text-3xl font-bold text-brand-dark tracking-tight">Cities We Cover</h2>
+            {/* Right Column: Interactive Tutor Matching Simulator */}
+            <div className="lg:col-span-5 flex justify-center">
+              <TutorMatchingSimulator />
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* 2. INTERACTIVE TUTOR SEARCH (REQUIREMENT 3) */}
+      {/* ========================================================================= */}
+      <section id="search-section" className="section-padding bg-white relative">
+        <div className="container-custom relative z-10">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <div className="inline-flex items-center gap-1.5 text-xs font-bold text-brand-lightBlue uppercase tracking-wider mb-2">
+              <Compass className="w-4 h-4" />
+              <span>Smart Search Engine</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight">
+              Find Your Ideal Tutor in 4 Easy Steps
+            </h2>
+            <p className="text-slate-600 text-base mt-2">
+              Select your requirements and our matching algorithm will instantly surface the highest-rated educators near you.
+            </p>
+          </div>
+
+          <InteractiveTutorSearch />
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* 3. BENTO GRID PLATFORM BENEFITS (REQUIREMENT 7) */}
+      {/* ========================================================================= */}
+      <section className="section-padding bg-slate-50 relative overflow-hidden">
+        <div className="container-custom">
+          <div className="text-center max-w-2xl mx-auto mb-16">
+            <div className="inline-flex items-center gap-1.5 text-xs font-bold text-brand-orange uppercase tracking-wider mb-2">
+              <Zap className="w-4 h-4" />
+              <span>Platform Advantages</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight">
+              Engineered for Academic Excellence
+            </h2>
+            <p className="text-slate-600 text-base mt-2">
+              Why thousands of families across North India trust Paradox Tuition over traditional agencies.
+            </p>
+          </div>
+
+          {/* Bento Grid layout */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            
+            {/* Card 1: Large Card - Personalized Tutor Matching */}
+            <div className="md:col-span-2 bg-gradient-to-br from-brand-dark via-slate-900 to-brand-blue rounded-3xl p-8 sm:p-10 text-white shadow-soft-lg flex flex-col justify-between relative overflow-hidden group">
+              <div className="absolute top-0 right-0 w-80 h-80 bg-brand-lightBlue/20 rounded-full blur-3xl group-hover:scale-110 transition-transform duration-700" />
+              <div className="relative z-10 space-y-4">
+                <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-brand-orange bg-white/10 px-3 py-1 rounded-full backdrop-blur-sm">
+                  <Sparkles className="w-3.5 h-3.5" /> Intelligent Algorithm
+                </span>
+                <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-snug">
+                  Personalized Tutor Matching
+                </h3>
+                <p className="text-slate-300 text-sm sm:text-base max-w-lg leading-relaxed">
+                  We don't just assign any teacher. Our system analyzes your child's learning pace, syllabus, language preference, and specific doubt areas to recommend tutors with proven success in that exact curriculum.
+                </p>
               </div>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                {['Prayagraj', 'Lucknow', 'Kanpur', 'Delhi NCR', 'Mumbai', 'Bangalore'].map((city, idx) => (
-                  <div key={idx} className="bg-gray-50 p-4 rounded-xl border border-gray-100 flex items-center justify-between group hover:border-brand-pink hover:bg-brand-pink/5 hover:shadow-sm transition-all duration-200 cursor-pointer">
-                    <span className="text-sm font-medium text-slate-700 group-hover:text-brand-pink transition-colors">{city}</span>
-                    <MapPin className="h-4 w-4 text-brand-pink/30 group-hover:text-brand-pink transition-colors" />
-                  </div>
-                ))}
+
+              <div className="relative z-10 pt-8 mt-6 border-t border-white/10 flex flex-wrap items-center gap-4 text-xs font-semibold text-slate-300">
+                <span className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-xl">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400" /> Tailored Pedagogical Style
+                </span>
+                <span className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-xl">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400" /> 1-on-1 Free Demo Session
+                </span>
               </div>
             </div>
+
+            {/* Card 2: Small Card - Verified Tutors */}
+            <div className="bg-white rounded-3xl p-8 border border-slate-200/80 shadow-soft flex flex-col justify-between hover:shadow-soft-lg hover:-translate-y-1 transition-all duration-300">
+              <div className="space-y-4">
+                <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
+                  <ShieldCheck className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-bold text-brand-dark">
+                  Strictly Verified Tutors
+                </h3>
+                <p className="text-slate-600 text-sm leading-relaxed">
+                  Every tutor profile undergoes multi-point credential verification, identity checks, and teaching demonstrations before approval.
+                </p>
+              </div>
+              <div className="pt-6 text-xs font-bold text-emerald-600 flex items-center gap-1">
+                <span>Top 5% Acceptance Rate</span>
+              </div>
+            </div>
+
+            {/* Card 3: Small Card - Learn Anywhere */}
+            <div className="bg-white rounded-3xl p-8 border border-slate-200/80 shadow-soft flex flex-col justify-between hover:shadow-soft-lg hover:-translate-y-1 transition-all duration-300">
+              <div className="space-y-4">
+                <div className="w-12 h-12 rounded-2xl bg-blue-50 text-brand-lightBlue flex items-center justify-center font-bold">
+                  <HomeIcon className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-bold text-brand-dark">
+                  Learn Anywhere
+                </h3>
+                <p className="text-slate-600 text-sm leading-relaxed">
+                  Choose between comfortable in-person home tuition right at your doorstep or high-interactivity digital online lessons.
+                </p>
+              </div>
+              <div className="pt-6 text-xs font-bold text-brand-lightBlue flex items-center gap-1">
+                <span>Home Visits or Interactive Online</span>
+              </div>
+            </div>
+
+            {/* Card 4: Medium Card - Multiple Subjects */}
+            <div className="bg-white rounded-3xl p-8 border border-slate-200/80 shadow-soft flex flex-col justify-between hover:shadow-soft-lg hover:-translate-y-1 transition-all duration-300">
+              <div className="space-y-4">
+                <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold">
+                  <BookOpen className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-bold text-brand-dark">
+                  Multiple Subjects
+                </h3>
+                <p className="text-slate-600 text-sm leading-relaxed">
+                  From foundational K-8 to advanced JEE, NEET, ICSE, and CBSE board mentors across Science, Maths, Commerce, and Languages.
+                </p>
+              </div>
+              <div className="pt-6 text-xs font-bold text-amber-600 flex items-center gap-1">
+                <span>50+ Subject Specializations</span>
+              </div>
+            </div>
+
+            {/* Card 5: Medium Card - Flexible Learning */}
+            <div className="bg-white rounded-3xl p-8 border border-slate-200/80 shadow-soft flex flex-col justify-between hover:shadow-soft-lg hover:-translate-y-1 transition-all duration-300">
+              <div className="space-y-4">
+                <div className="w-12 h-12 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center font-bold">
+                  <Clock className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-bold text-brand-dark">
+                  Flexible Schedules
+                </h3>
+                <p className="text-slate-600 text-sm leading-relaxed">
+                  Learn on your terms. Set your weekly class frequency, evening or weekend slots, with the ability to reschedule easily.
+                </p>
+              </div>
+              <div className="pt-6 text-xs font-bold text-purple-600 flex items-center gap-1">
+                <span>Custom Batches & Timings</span>
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="section-padding bg-gradient-to-t from-blue-50/50 to-pink-50/30 relative">
-        <div className="container-custom relative z-10">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-brand-dark mb-4 tracking-tight">Community <span className="text-brand-pink">Love</span></h2>
-            <p className="text-slate-600 text-lg max-w-2xl mx-auto">Don't just take our word for it. See what our parents and students have to say.</p>
+      {/* ========================================================================= */}
+      {/* 4. "HOW IT WORKS" — INTERACTIVE JOURNEY (REQUIREMENT 6) */}
+      {/* ========================================================================= */}
+      <section id="how-it-works" className="section-padding bg-white relative">
+        <div className="container-custom">
+          <div className="text-center max-w-2xl mx-auto mb-16">
+            <div className="inline-flex items-center gap-1.5 text-xs font-bold text-brand-lightBlue uppercase tracking-wider mb-2">
+              <Sparkles className="w-4 h-4" />
+              <span>Simple 4-Step Process</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight">
+              How It Works
+            </h2>
+            <p className="text-slate-600 text-base mt-2">
+              From your initial requirement to your first class in 4 transparent steps.
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative max-w-6xl mx-auto">
             {[
-              { name: "Rahul Sharma", role: "Parent, Delhi", initialColor: "bg-blue-100 text-brand-lightBlue", text: "Finding a reliable math tutor was a struggle until we found Paradox. My son's grades have improved significantly in just 2 months." },
-              { name: "Priya Singh", role: "Student, Class 12", initialColor: "bg-pink-100 text-brand-pink", text: "The physics tutor I found here explained concepts so easily. I cracked my board exams with 95%! Highly thankful to the team." },
-              { name: "Amit Verma", role: "Parent, Lucknow", initialColor: "bg-orange-100 text-brand-orange", text: "Very professional service. The demo class helped us make the right choice without any upfront payment. Highly recommended." }
-            ].map((testimonial, idx) => (
-              <Card key={idx} className="bg-white border-gray-100 shadow-md hover:shadow-xl transition-shadow duration-300">
-                <CardContent className="p-8">
-                  <div className="flex gap-1 mb-6">
-                    {[...Array(5)].map((_, i) => <Star key={i} className="h-5 w-5 text-amber-400 fill-current" />)}
-                  </div>
-                  <p className="text-slate-700 text-[15px] mb-8 leading-relaxed italic">"{testimonial.text}"</p>
-                  <div className="flex items-center gap-4">
-                    <div className={`w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg shadow-sm border border-white/50 ${testimonial.initialColor}`}>
-                      {testimonial.name.charAt(0)}
+              {
+                step: '01',
+                title: 'Tell Us What You Need',
+                desc: 'Share your grade, curriculum, subjects, location, and preferred learning schedule in 60 seconds.',
+                icon: BookOpen,
+                badge: '1 Min Request',
+              },
+              {
+                step: '02',
+                title: 'We Find Suitable Tutors',
+                desc: 'Our system identifies top-rated tutors matching your requirements and academic goals.',
+                icon: Search,
+                badge: 'Instant Matching',
+              },
+              {
+                step: '03',
+                title: 'Choose Your Tutor',
+                desc: 'Review detailed tutor credentials, experience, compatibility scores, and schedule a free demo.',
+                icon: UserCheck,
+                badge: 'Profiles & Scores',
+              },
+              {
+                step: '04',
+                title: 'Start Learning',
+                desc: 'Attend the 1-on-1 demo session. If completely satisfied, finalize timings and begin learning.',
+                icon: GraduationCap,
+                badge: 'Zero Risk Demo',
+              },
+            ].map((item, idx) => {
+              const Icon = item.icon;
+              return (
+                <div
+                  key={idx}
+                  className="bg-brand-gray/80 rounded-3xl p-7 border border-slate-200/80 shadow-soft hover:shadow-soft-lg hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between group"
+                >
+                  <div>
+                    <div className="flex items-center justify-between mb-6">
+                      <span className="text-3xl font-black text-slate-300 group-hover:text-brand-lightBlue transition-colors">
+                        {item.step}
+                      </span>
+                      <div className="w-12 h-12 rounded-2xl bg-white text-brand-dark shadow-sm flex items-center justify-center group-hover:bg-brand-lightBlue group-hover:text-white transition-colors">
+                        <Icon className="w-6 h-6" />
+                      </div>
                     </div>
-                    <div>
-                      <h4 className="font-bold text-brand-dark">{testimonial.name}</h4>
-                      <p className="text-slate-500 text-xs font-medium mt-0.5 uppercase tracking-wide">{testimonial.role}</p>
-                    </div>
+                    <h3 className="text-lg font-bold text-brand-dark mb-2 group-hover:text-brand-lightBlue transition-colors">
+                      {item.title}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                      {item.desc}
+                    </p>
                   </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* Final CTA */}
-      <section className="py-24 bg-brand-dark relative overflow-hidden text-center">
-        <div className="absolute inset-0 bg-gradient-to-tr from-brand-lightBlue/20 via-transparent to-brand-pink/20 opacity-80"></div>
-        <div className="absolute top-0 w-full h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-        
-        <div className="container-custom relative z-10 max-w-3xl">
-          <h2 className="text-3xl md:text-5xl font-extrabold text-white mb-6 tracking-tight text-balance">
-            Ready to Start <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-yellow-400">Learning?</span>
-          </h2>
-          <p className="text-lg text-slate-300 mb-10 max-w-xl mx-auto font-medium">Join thousands of students who are achieving their academic goals with our verified and highly qualified home tutors.</p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Button size="lg" onClick={() => navigate('/find-tutor')} className="bg-brand-orange hover:bg-orange-500 text-white border-none shadow-orange-500/30 shadow-lg text-lg px-10 py-4" rightIcon={<ArrowRight className="w-5 h-5" />}>
-              Book Your Free Demo
+                  <div className="mt-6 pt-4 border-t border-slate-200/60">
+                    <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                      {item.badge}
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="mt-12 text-center">
+            <Button
+              size="lg"
+              onClick={() => navigate('/find-tutor')}
+              className="py-3.5 px-8 text-sm font-bold shadow-soft rounded-2xl"
+              rightIcon={<ArrowRight className="w-4 h-4" />}
+            >
+              Get Started Today
             </Button>
           </div>
         </div>
       </section>
 
+      {/* ========================================================================= */}
+      {/* 5. INTERACTIVE SUBJECT EXPLORER (REQUIREMENT 10) */}
+      {/* ========================================================================= */}
+      <section className="section-padding bg-slate-50 relative">
+        <div className="container-custom">
+          <div className="text-center max-w-2xl mx-auto mb-16">
+            <div className="inline-flex items-center gap-1.5 text-xs font-bold text-brand-lightBlue uppercase tracking-wider mb-2">
+              <GraduationCap className="w-4 h-4" />
+              <span>Curriculum & Specialties</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight">
+              Explore Tutors by Subject
+            </h2>
+            <p className="text-slate-600 text-base mt-2">
+              Experienced educators specializing in CBSE, ICSE, State Boards, and competitive exams.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 max-w-6xl mx-auto">
+            {SUBJECT_LIST.map((sub, idx) => (
+              <div
+                key={idx}
+                className={`bg-white rounded-3xl p-6 border border-slate-200/80 shadow-soft transition-all duration-300 hover:shadow-soft-xl hover:-translate-y-1.5 flex flex-col justify-between group ${sub.borderColor}`}
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="text-3xl p-2.5 rounded-2xl bg-slate-50 border border-slate-100 group-hover:scale-110 transition-transform">
+                      {sub.icon}
+                    </div>
+                    <span className="text-[11px] font-bold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-full">
+                      {sub.tutorCount}
+                    </span>
+                  </div>
+                  <h3 className="text-lg font-bold text-brand-dark group-hover:text-brand-lightBlue transition-colors mb-1">
+                    {sub.name}
+                  </h3>
+                  <p className="text-xs text-slate-500 leading-relaxed">
+                    {sub.desc}
+                  </p>
+                </div>
+
+                <div className="mt-6 pt-4 border-t border-slate-100">
+                  <Link
+                    to={`/find-tutors?subject=${encodeURIComponent(sub.name)}`}
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-brand-lightBlue hover:text-blue-700 transition-colors group-hover:translate-x-0.5"
+                  >
+                    <span>Explore Tutors</span>
+                    <ChevronRight className="w-3.5 h-3.5" />
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* 6. PREMIUM STATISTICS SECTION (REQUIREMENT 8) */}
+      {/* ========================================================================= */}
+      <section className="py-20 bg-brand-dark text-white relative overflow-hidden">
+        {/* Subtle grid pattern background */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#1f293d_1px,transparent_1px),linear-gradient(to_bottom,#1f293d_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-30" />
+        
+        <div className="container-custom relative z-10">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+            
+            {/* Stat 1 */}
+            <div className="bg-white/5 border border-white/10 rounded-3xl p-6 sm:p-8 text-center backdrop-blur-md">
+              <div className="text-3xl sm:text-5xl font-black text-white tracking-tight mb-2">
+                <AnimatedCounter end={500} suffix="+" />
+              </div>
+              <div className="text-xs sm:text-sm font-bold text-brand-orange uppercase tracking-wider">
+                Qualified Tutors
+              </div>
+              <p className="text-xs text-slate-400 mt-1">Verified background & degrees</p>
+            </div>
+
+            {/* Stat 2 */}
+            <div className="bg-white/5 border border-white/10 rounded-3xl p-6 sm:p-8 text-center backdrop-blur-md">
+              <div className="text-3xl sm:text-5xl font-black text-white tracking-tight mb-2">
+                <AnimatedCounter end={1000} suffix="+" />
+              </div>
+              <div className="text-xs sm:text-sm font-bold text-emerald-400 uppercase tracking-wider">
+                Students Assisted
+              </div>
+              <p className="text-xs text-slate-400 mt-1">Across 12+ city zones</p>
+            </div>
+
+            {/* Stat 3 */}
+            <div className="bg-white/5 border border-white/10 rounded-3xl p-6 sm:p-8 text-center backdrop-blur-md">
+              <div className="text-3xl sm:text-5xl font-black text-white tracking-tight mb-2">
+                <AnimatedCounter end={50} suffix="+" />
+              </div>
+              <div className="text-xs sm:text-sm font-bold text-brand-lightBlue uppercase tracking-wider">
+                Subjects & Exams
+              </div>
+              <p className="text-xs text-slate-400 mt-1">K-12, JEE, NEET & Doubts</p>
+            </div>
+
+            {/* Stat 4 */}
+            <div className="bg-white/5 border border-white/10 rounded-3xl p-6 sm:p-8 text-center backdrop-blur-md">
+              <div className="text-3xl sm:text-5xl font-black text-white tracking-tight mb-2">
+                100%
+              </div>
+              <div className="text-xs sm:text-sm font-bold text-amber-400 uppercase tracking-wider">
+                Zero Risk Demos
+              </div>
+              <p className="text-xs text-slate-400 mt-1">Pay only if satisfied</p>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* 7. SOCIAL PROOF & TESTIMONIALS (REQUIREMENT 9) */}
+      {/* ========================================================================= */}
+      <section className="section-padding bg-white relative">
+        <div className="container-custom">
+          <div className="text-center max-w-2xl mx-auto mb-16">
+            <div className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-600 uppercase tracking-wider mb-2">
+              <Star className="w-4 h-4 fill-emerald-500 text-emerald-500" />
+              <span>Real Student Stories</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight">
+              Trusted by Parents & Students
+            </h2>
+            <p className="text-slate-600 text-base mt-2">
+              Hear directly from families whose academic performance was transformed with Paradox tutors.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {TESTIMONIALS.map((t, idx) => (
+              <div
+                key={t.id}
+                className={`bg-brand-gray/60 rounded-3xl p-8 border transition-all duration-300 flex flex-col justify-between ${
+                  idx === 0
+                    ? 'border-brand-lightBlue/50 bg-blue-50/20 shadow-soft-lg ring-1 ring-brand-lightBlue/20'
+                    : 'border-slate-200/80 shadow-soft'
+                }`}
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex gap-1">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                      ))}
+                    </div>
+                    <span className="text-[11px] font-semibold text-slate-500 bg-white px-2.5 py-0.5 rounded-full border border-slate-200">
+                      {t.subject}
+                    </span>
+                  </div>
+
+                  <h3 className="font-bold text-base text-brand-dark mb-3">
+                    "{t.title}"
+                  </h3>
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed italic">
+                    "{t.content}"
+                  </p>
+                </div>
+
+                <div className="mt-8 pt-4 border-t border-slate-200/60 flex items-center gap-3">
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm shadow-sm ${t.avatarBg}`}>
+                    {t.avatar}
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-sm text-brand-dark flex items-center gap-1.5">
+                      {t.name}
+                      {t.verified && <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />}
+                    </h4>
+                    <p className="text-[11px] text-slate-500 font-medium">{t.role}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* 8. PREMIUM CALL-TO-ACTION SECTIONS (REQUIREMENT 11) */}
+      {/* ========================================================================= */}
+      <section className="section-padding bg-slate-50 relative overflow-hidden">
+        <div className="container-custom">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+            
+            {/* CTA 1: For Students / Parents */}
+            <div className="bg-gradient-to-br from-brand-blue to-indigo-900 rounded-3xl p-8 sm:p-12 text-white shadow-soft-xl relative overflow-hidden flex flex-col justify-between group">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-brand-lightBlue/20 rounded-full blur-2xl pointer-events-none" />
+              <div className="relative z-10 space-y-4">
+                <span className="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-brand-orange bg-white/10 px-3 py-1 rounded-full">
+                  For Students & Parents
+                </span>
+                <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+                  Ready to Find the Right Tutor?
+                </h3>
+                <p className="text-slate-200 text-sm sm:text-base leading-relaxed max-w-md">
+                  Tell us what you need and discover verified educators matching your specific learning goals, syllabus, and budget.
+                </p>
+              </div>
+
+              <div className="relative z-10 pt-8 mt-6">
+                <Button
+                  onClick={() => navigate('/find-tutor')}
+                  className="bg-brand-orange hover:bg-orange-600 text-white font-bold py-3 px-7 rounded-2xl shadow-soft"
+                  rightIcon={<ArrowRight className="w-4 h-4" />}
+                >
+                  Find Your Tutor
+                </Button>
+              </div>
+            </div>
+
+            {/* CTA 2: For Tutors / Teachers */}
+            <div className="bg-white rounded-3xl p-8 sm:p-12 border border-slate-200/80 shadow-soft-xl flex flex-col justify-between hover:border-slate-300 transition-all">
+              <div className="space-y-4">
+                <span className="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-brand-lightBlue bg-blue-50 px-3 py-1 rounded-full">
+                  Join Our Faculty
+                </span>
+                <h3 className="text-2xl sm:text-3xl font-extrabold text-brand-dark tracking-tight">
+                  Share Your Knowledge. Teach Students.
+                </h3>
+                <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-md">
+                  Join Paradox Consultancy Services as a verified tutor. Connect with earnest students in your neighborhood and grow your tutoring career.
+                </p>
+              </div>
+
+              <div className="pt-8 mt-6">
+                <Button
+                  variant="secondary"
+                  onClick={() => navigate('/become-tutor')}
+                  className="border-slate-300 hover:border-brand-dark text-brand-dark font-bold py-3 px-7 rounded-2xl"
+                  rightIcon={<ArrowRight className="w-4 h-4" />}
+                >
+                  Become a Tutor
+                </Button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
     </div>
   );
 };

@@ -4,9 +4,31 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --bg-primary: #F8FAFC;
+  --bg-surface: #FFFFFF;
+  --text-primary: #0B1329;
+  --text-secondary: #475569;
+  --border-subtle: rgba(226, 232, 240, 0.8);
+  --brand-blue: #2563EB;
+  --brand-navy: #1E3A8A;
+  --brand-orange: #F97316;
+}
+
+.dark {
+  --bg-primary: #0B1329;
+  --bg-surface: #111C38;
+  --text-primary: #F8FAFC;
+  --text-secondary: #94A3B8;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --brand-blue: #3B82F6;
+  --brand-navy: #60A5FA;
+  --brand-orange: #FB923C;
+}
+
 @layer base {
   body {
-    @apply font-sans antialiased text-brand-dark bg-brand-gray selection:bg-brand-lightBlue/30 selection:text-brand-dark;
+    @apply font-sans antialiased text-brand-dark bg-brand-gray selection:bg-brand-lightBlue/25 selection:text-brand-dark;
   }
 
   h1,
@@ -21,28 +43,40 @@
 
 @layer utilities {
   .glass {
-    @apply bg-white/70 backdrop-blur-md border border-white/40 shadow-glass;
+    @apply bg-white/80 backdrop-blur-md border border-white/60 shadow-glass;
+  }
+  .glass-card {
+    @apply bg-white/90 backdrop-blur-xl border border-slate-200/60 shadow-soft transition-all duration-300;
   }
   .glass-dark {
-    @apply bg-black/50 backdrop-blur-md border border-white/10 shadow-glass;
+    @apply bg-slate-900/80 backdrop-blur-md border border-white/10 shadow-glass;
   }
   .text-balance {
     text-wrap: balance;
   }
+  .shimmer-skeleton {
+    background: linear-gradient(90deg, #f1f5f9 0%, #e2e8f0 50%, #f1f5f9 100%);
+    background-size: 200% 100%;
+    animation: shimmer 1.8s infinite;
+  }
 }
 
 @layer components {
-  /* Legacy classes kept for compatibility during migration */
+  /* Elevated button system */
   .btn-primary {
-    @apply inline-flex items-center justify-center px-6 py-3 border border-transparent text-sm font-medium rounded-xl text-white transition-all duration-200 bg-brand-lightBlue hover:bg-blue-600 shadow-soft hover:shadow-soft-lg hover:-translate-y-0.5 active:translate-y-0;
+    @apply inline-flex items-center justify-center px-6 py-3 border border-transparent text-sm font-semibold rounded-xl text-white transition-all duration-200 bg-brand-lightBlue hover:bg-blue-600 shadow-soft hover:shadow-soft-lg hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.99] disabled:opacity-50 disabled:pointer-events-none;
   }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center px-6 py-3 border border-gray-200 text-sm font-medium rounded-xl text-brand-dark bg-white hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 shadow-sm hover:shadow-soft;
+    @apply inline-flex items-center justify-center px-6 py-3 border border-slate-200 text-sm font-semibold rounded-xl text-slate-800 bg-white hover:bg-slate-50 hover:border-slate-300 transition-all duration-200 shadow-sm hover:shadow-soft hover:-translate-y-0.5 active:translate-y-0;
+  }
+
+  .btn-gradient {
+    @apply inline-flex items-center justify-center px-6 py-3 text-sm font-semibold rounded-xl text-white bg-gradient-to-r from-brand-lightBlue via-blue-600 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 shadow-soft hover:shadow-glow-blue transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0;
   }
 
   .section-padding {
-    @apply py-16 md:py-24;
+    @apply py-16 md:py-24 lg:py-28;
   }
 
   .container-custom {
