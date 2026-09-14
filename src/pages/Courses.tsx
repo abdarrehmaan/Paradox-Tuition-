@@ -894,10 +894,10 @@ const Courses: React.FC = () => {
   return (
     <div className="bg-slate-50 min-h-screen text-brand-dark">
       {/* ================= HERO SECTION ================= */}
-      <section className="relative overflow-hidden bg-brand-dark text-white pt-16 pb-20 lg:pt-24 lg:pb-28">
+      <section className="relative overflow-hidden bg-brand-dark bg-grid-dark text-white pt-16 pb-20 lg:pt-24 lg:pb-28">
         {/* Glow Gradients */}
-        <div className="absolute -top-32 -left-32 w-96 h-96 bg-brand-lightBlue/20 rounded-full blur-[140px] pointer-events-none" />
-        <div className="absolute top-1/2 -right-32 w-96 h-96 bg-brand-orange/15 rounded-full blur-[140px] pointer-events-none" />
+        <div className="absolute -top-32 -left-32 w-96 h-96 bg-brand-lightBlue/20 rounded-full blur-[140px] pointer-events-none animate-glow-pulse" />
+        <div className="absolute top-1/2 -right-32 w-96 h-96 bg-brand-orange/15 rounded-full blur-[140px] pointer-events-none animate-glow-pulse" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center max-w-3xl mx-auto space-y-5">
@@ -1058,7 +1058,7 @@ const Courses: React.FC = () => {
       </section>
 
       {/* ================= COURSES GRID ================= */}
-      <section className="py-12 md:py-16">
+      <section className="py-12 md:py-16 bg-grid-lines relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
             <div>
@@ -1076,9 +1076,9 @@ const Courses: React.FC = () => {
           </div>
 
           {/* ================= SPOTLIGHT: ICSE CLASS 9 & 10 SHOWCASE ================= */}
-          <div className="mb-12 bg-gradient-to-br from-slate-900 via-brand-dark to-slate-950 rounded-3xl p-6 sm:p-8 text-white relative overflow-hidden border border-amber-400/40 shadow-xl">
-            <div className="absolute -right-20 -top-20 w-72 h-72 bg-amber-500/15 rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute -left-20 -bottom-20 w-72 h-72 bg-sky-500/15 rounded-full blur-3xl pointer-events-none" />
+          <div className="mb-12 bg-gradient-to-br from-slate-900 via-brand-dark to-slate-950 bg-grid-dark rounded-3xl p-6 sm:p-8 text-white relative overflow-hidden border border-amber-400/40 shadow-2xl">
+            <div className="absolute -right-20 -top-20 w-72 h-72 bg-amber-500/15 rounded-full blur-3xl pointer-events-none animate-glow-pulse" />
+            <div className="absolute -left-20 -bottom-20 w-72 h-72 bg-sky-500/15 rounded-full blur-3xl pointer-events-none animate-glow-pulse" />
 
             <div className="relative z-10">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
@@ -1147,7 +1147,7 @@ const Courses: React.FC = () => {
                           const c = COURSES_DATA.find((x) => x.id === 'icse-class-9-10-java');
                           if (c) setBookingCourse(c);
                         }}
-                        className="text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 px-3.5 py-1.5 rounded-xl transition-colors shadow-sm"
+                        className="text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 px-3.5 py-1.5 rounded-xl transition-all shadow-sm btn-shimmer"
                       >
                         Book Free Demo
                       </button>
@@ -1199,7 +1199,7 @@ const Courses: React.FC = () => {
                           const c = COURSES_DATA.find((x) => x.id === 'icse-class-9-10-python');
                           if (c) setBookingCourse(c);
                         }}
-                        className="text-xs font-bold bg-emerald-500 hover:bg-emerald-400 text-slate-950 px-3.5 py-1.5 rounded-xl transition-colors shadow-sm"
+                        className="text-xs font-bold bg-emerald-500 hover:bg-emerald-400 text-slate-950 px-3.5 py-1.5 rounded-xl transition-all shadow-sm btn-shimmer"
                       >
                         Book Free Demo
                       </button>
@@ -1346,7 +1346,7 @@ const Courses: React.FC = () => {
                       <Button
                         variant="primary"
                         size="sm"
-                        className="w-full text-xs font-bold justify-center shadow-sm"
+                        className="w-full text-xs font-bold justify-center shadow-sm btn-shimmer"
                         onClick={() => setBookingCourse(course)}
                       >
                         Book Free Demo

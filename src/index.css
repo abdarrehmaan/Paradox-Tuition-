@@ -59,6 +59,105 @@
     background-size: 200% 100%;
     animation: shimmer 1.8s infinite;
   }
+
+  /* Grid & Dot Background Textures */
+  .bg-grid-pattern {
+    background-image: radial-gradient(rgba(148, 163, 184, 0.22) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  
+  .bg-grid-lines {
+    background-size: 40px 40px;
+    background-image: 
+      linear-gradient(to right, rgba(226, 232, 240, 0.7) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(226, 232, 240, 0.7) 1px, transparent 1px);
+  }
+
+  .bg-grid-dark {
+    background-size: 36px 36px;
+    background-image: 
+      linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  }
+
+  /* Modern Gradient Text Utilities */
+  .text-gradient-primary {
+    @apply bg-gradient-to-r from-blue-600 via-indigo-600 to-sky-500 bg-clip-text text-transparent;
+  }
+
+  .text-gradient-orange {
+    @apply bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 bg-clip-text text-transparent;
+  }
+
+  .text-gradient-emerald {
+    @apply bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 bg-clip-text text-transparent;
+  }
+
+  .text-gradient-aurora {
+    @apply bg-gradient-to-r from-blue-400 via-sky-300 to-amber-300 bg-clip-text text-transparent;
+  }
+
+  /* Interactive Cards */
+  .card-interactive {
+    @apply bg-white rounded-3xl border border-slate-200/80 shadow-soft hover:shadow-card-hover transition-all duration-300 hover:-translate-y-1.5 hover:border-slate-300;
+  }
+
+  .card-glow-amber {
+    @apply relative bg-gradient-to-b from-amber-50/40 via-white to-white border border-amber-300/80 shadow-soft hover:shadow-glow-amber transition-all duration-300;
+  }
+
+  .card-glow-blue {
+    @apply relative bg-gradient-to-b from-blue-50/40 via-white to-white border border-blue-300/80 shadow-soft hover:shadow-glow-blue transition-all duration-300;
+  }
+
+  /* Shimmer Button Effect */
+  .btn-shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-shimmer::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+      60deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.25) 50%,
+      transparent 100%
+    );
+    transform: rotate(30deg) translateX(-100%);
+    transition: transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn-shimmer:hover::after {
+    transform: rotate(30deg) translateX(100%);
+  }
+
+  /* Live Pulsing Dot Badge */
+  .badge-live {
+    @apply relative inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold;
+  }
+  .badge-live-dot {
+    @apply relative flex h-2 w-2;
+  }
+  .badge-live-dot span:first-child {
+    @apply animate-ping absolute inline-flex h-full w-full rounded-full opacity-75;
+  }
+  .badge-live-dot span:last-child {
+    @apply relative inline-flex rounded-full h-2 w-2;
+  }
+
+  /* Smooth Focus Ring */
+  .focus-ring {
+    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-lightBlue focus-visible:ring-offset-2;
+  }
+
+  /* Gradient Border & Floating Pills */
+  .gradient-pill {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border backdrop-blur-md shadow-xs;
+  }
 }
 
 @layer components {

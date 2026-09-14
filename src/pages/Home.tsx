@@ -144,10 +144,10 @@ const Home: React.FC = () => {
       {/* ========================================================================= */}
       {/* 1. HERO SECTION (REQUIREMENT 2) */}
       {/* ========================================================================= */}
-      <section className="relative pt-12 pb-20 md:pt-20 md:pb-28 overflow-hidden bg-gradient-to-b from-blue-50/60 via-brand-gray to-brand-gray">
+      <section className="relative pt-12 pb-20 md:pt-20 md:pb-28 overflow-hidden bg-gradient-to-b from-blue-50/60 via-brand-gray to-brand-gray bg-grid-pattern">
         {/* Ambient subtle glow backdrops */}
-        <div className="absolute top-10 left-1/4 w-96 h-96 bg-brand-lightBlue/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute top-40 right-10 w-96 h-96 bg-brand-orange/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-10 left-1/4 w-96 h-96 bg-brand-lightBlue/10 rounded-full blur-3xl pointer-events-none animate-glow-pulse" />
+        <div className="absolute top-40 right-10 w-96 h-96 bg-brand-orange/10 rounded-full blur-3xl pointer-events-none animate-glow-pulse" />
 
         <div className="container-custom relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
@@ -181,7 +181,7 @@ const Home: React.FC = () => {
                 <Button
                   size="lg"
                   onClick={scrollToSearch}
-                  className="w-full sm:w-auto bg-brand-lightBlue hover:bg-blue-600 text-white font-bold shadow-soft hover:shadow-glow-blue rounded-2xl px-8 py-4 text-base transition-all"
+                  className="w-full sm:w-auto bg-brand-lightBlue hover:bg-blue-600 text-white font-bold shadow-soft hover:shadow-glow-blue rounded-2xl px-8 py-4 text-base transition-all btn-shimmer"
                   rightIcon={<ArrowRight className="w-5 h-5" />}
                 >
                   Find a Tutor
@@ -465,12 +465,12 @@ const Home: React.FC = () => {
       {/* ========================================================================= */}
       {/* 5. INTERACTIVE SUBJECT EXPLORER (REQUIREMENT 10) */}
       {/* ========================================================================= */}
-      <section className="section-padding bg-slate-50 relative">
+      <section className="section-padding bg-slate-50 bg-grid-lines relative">
         <div className="container-custom">
           <div className="text-center max-w-2xl mx-auto mb-16">
             <div className="inline-flex items-center gap-1.5 text-xs font-bold text-brand-lightBlue uppercase tracking-wider mb-2">
               <GraduationCap className="w-4 h-4" />
-              <span>Curriculum & Specialties</span>
+              <span>Curriculum &amp; Specialties</span>
             </div>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight">
               Explore Tutors by Subject
@@ -484,7 +484,7 @@ const Home: React.FC = () => {
             {SUBJECT_LIST.map((sub, idx) => (
               <div
                 key={idx}
-                className={`bg-white rounded-3xl p-6 border border-slate-200/80 shadow-soft transition-all duration-300 hover:shadow-soft-xl hover:-translate-y-1.5 flex flex-col justify-between group ${sub.borderColor}`}
+                className={`bg-white rounded-3xl p-6 border border-slate-200/80 shadow-soft transition-all duration-300 hover:shadow-card-hover hover:-translate-y-2 flex flex-col justify-between group ${sub.borderColor}`}
               >
                 <div>
                   <div className="flex items-center justify-between mb-4">
